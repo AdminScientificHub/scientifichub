@@ -1,0 +1,68 @@
+{
+  "New React Function Component": {
+    "scope": "typescriptreact",
+    "prefix": "rfc",
+    "body": [
+      "import React, { FunctionComponent } from 'react'",
+      "",
+      "type TProps = {}",
+      "",
+      "export const ${TM_FILENAME_BASE}: FunctionComponent<TProps> = () => {",
+      "  return <div>Todo</div>",
+      "}",
+      "",
+      "export type T${TM_FILENAME_BASE}Props = TProps"
+    ],
+    "description": "Generate template for component"
+  },
+  "Context": {
+    "prefix": "context",
+    "body": [
+      "import { createContext } from 'react'",
+      "",
+      "type TContext = {",
+      "\t$0$1",
+      "}",
+      "",
+      "const initialValue: TContext = {",
+      "\t$0$2",
+      "}",
+      "",
+      "export const $3Context = createContext<TContext>(initialValue)",
+      "export type T$3Context = TContext"
+    ]
+  },
+  "Provider Context": {
+    "prefix": "context-provider",
+    "body": [
+      "import React, { FunctionComponent, useContext } from 'react'",
+      "import { $1Context, T$1Context } from './Context'",
+      "import { use$1Provider } from './Hook'",
+      "",
+      "export const $1Provider: FunctionComponent = ({ children }) => {",
+      "\t$0 const value = use$1Provider()",
+      "",
+      "\treturn (",
+      "\t\t<$1Context.Provider value={value}>",
+      "\t\t\t{children}",
+      "\t\t</$1Context.Provider>",
+      "\t)",
+      "}",
+      "",
+      "export const use$1Context = (): TContext => {",
+      "\treturn useContext($1Context)",
+      "}"
+    ]
+  },
+  "Hook Context": {
+    "prefix": "hook-provider",
+    "body": [
+      "import { T$1Context } from './Context'",
+      "",
+      "export const use$1 = (): TContext => {",
+      "",
+      "\treturn {}",
+      "}"
+    ]
+  }
+}
