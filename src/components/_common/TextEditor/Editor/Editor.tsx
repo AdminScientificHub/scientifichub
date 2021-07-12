@@ -1,13 +1,14 @@
 import React, { FunctionComponent } from 'react'
 
-import { StyledContainer, StyledEditor } from './Editor.styled'
+import { EditorContent } from '@tiptap/react'
+
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 
-import { TextEditorTitle } from './Title'
 import { TextEditorAuthors } from './Authors'
-import { ShareableLinks } from './ShareableLinks'
+import { StyledContainer, StyledEditor } from './Editor.styled'
 import { EditorFloatingMenu } from './FloatingMenu'
-import { EditorContent } from '@tiptap/react'
+import { ShareableLinks } from './ShareableLinks'
+import { TextEditorTitle } from './Title'
 
 type TProps = {}
 

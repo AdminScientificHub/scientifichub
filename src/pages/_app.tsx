@@ -1,8 +1,9 @@
+import AppType, { AppContext, AppInitialProps } from 'next/app'
+import { withUserAgent, WithUserAgentProps } from 'next-useragent'
+import React from 'react'
+
 import { Page } from '@src/utils/libs/nextjs'
 import { GlobalStyles } from '@src/utils/styles/Global'
-import AppType, { AppContext, AppInitialProps } from 'next/app'
-import React from 'react'
-import { withUserAgent, WithUserAgentProps } from 'next-useragent'
 
 class App extends AppType<AppContext & WithUserAgentProps & {}, AppInitialProps> {
   static async getInitialProps(ctx: any) {
@@ -20,7 +21,7 @@ class App extends AppType<AppContext & WithUserAgentProps & {}, AppInitialProps>
 
     const Layout = (Component as Page)?.Layout || null
 
-    const { ua } = this.props as WithUserAgentProps
+    // const { ua } = this.props as WithUserAgentProps
 
     // Todo => create provider to access this
     // console.log(ua?.isMac)

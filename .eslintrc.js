@@ -7,7 +7,7 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-    'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+    'prettier', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
   ],
   plugins: [
@@ -17,7 +17,7 @@ module.exports = {
     'react-hooks',
     'unused-imports',
     'simple-import-sort',
-    '@emotion',
+    '@emotion/eslint-plugin',
   ],
   settings: {
     'import/parsers': {
@@ -59,7 +59,6 @@ module.exports = {
         ],
       },
     ],
-    'moment-utc/no-moment-without-utc': 'error',
     'react/jsx-uses-react': 1,
     'react/jsx-uses-vars': 1,
     '@typescript-eslint/no-unused-vars': 'off',
@@ -72,12 +71,6 @@ module.exports = {
     curly: 'warn',
     'sort-imports': 'off',
     'import/order': 'off',
-    'simple-import-sort/imports': [
-      'error',
-      {
-        groups: [['^\\u0000'], ['^(?!@)\\w'], ['^@!?(?!src)\\w'], ['^@src\\w'], ['^'], ['^\\.']],
-      },
-    ],
     'simple-import-sort/exports': 'error',
   },
   ignorePatterns: ['src/generated/'],

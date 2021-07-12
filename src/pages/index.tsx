@@ -1,8 +1,9 @@
-import { TextEditorLayout } from '@src/components/layouts/TextEditor/Layout'
-import { TextEditor } from '@src/components/_common'
 import { useRouter } from 'next/dist/client/router'
 import Head from 'next/head'
 import React, { useEffect } from 'react'
+
+import { TextEditor } from '@src/components/_common'
+import { TextEditorLayout } from '@src/components/layouts/TextEditor/Layout'
 
 const Home = () => {
   const router = useRouter()

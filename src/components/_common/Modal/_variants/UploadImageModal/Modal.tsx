@@ -1,19 +1,21 @@
-import { Modal, TModalProps } from '@src/components/_common'
+import 'firebase/storage'
+
+import firebase from 'firebase/app'
 import React, { FunctionComponent, useCallback, useState } from 'react'
+import { FileRejection, useDropzone } from 'react-dropzone'
+
+import FileUploadIcon from '@src/assets/icons/file-upload.svg'
+import LoadingIcon from '@src/assets/icons/loading.svg'
+import { Modal, TModalProps } from '@src/components/_common'
+import { Paragraph } from '@src/components/core'
+import { useTextEditorContext } from '@src/contextes'
+
 import {
   StyledContainer,
   StyledDropContainer,
   StyledLoadingContainer,
   StyledLoadingSpinner,
 } from './Modal.styled'
-import { useDropzone, FileRejection } from 'react-dropzone'
-import firebase from 'firebase/app'
-import 'firebase/storage'
-
-import FileUploadIcon from '@src/assets/icons/file-upload.svg'
-import LoadingIcon from '@src/assets/icons/loading.svg'
-import { Paragraph } from '@src/components/core'
-import { useTextEditorContext } from '@src/contextes'
 
 type TProps = {} & TModalProps
 
@@ -61,7 +63,7 @@ export const UploadImageModal: FunctionComponent<TProps> = ({ closeModal, ...pro
         },
       )
     },
-    [editor, isMaxSizeExceed, setIsMaxSizeExceed],
+    [editor, isMaxSizeExceed, setIsMaxSizeExceed, closeModal],
   )
 
   // Error can only become from sizeExceed for now

@@ -1,5 +1,5 @@
-import { useGlobalContext } from '@src/contextes'
 import React, { FunctionComponent } from 'react'
+
 import { StyledContainer } from './Content.styled'
 
 type TProps = {}

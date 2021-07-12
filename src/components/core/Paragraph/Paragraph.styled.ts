@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+
 import { COLOR, FONT_FAMILY, SIZE, TTokenColor, TTokenSize } from '@src/utils/styles/tokens'
 
 type TProps = {

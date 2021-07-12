@@ -1,6 +1,8 @@
-import { useGlobalContext } from '@src/contextes'
 import React, { FunctionComponent } from 'react'
 import ModalComponent from 'react-modal'
+
+import { useGlobalContext } from '@src/contextes'
+
 import { mobileModalStyle, modalStyle } from './Modal.styled'
 
 type TProps = {

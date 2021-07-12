@@ -1,8 +1,9 @@
-import React from 'react'
-import { TextEditorLayout } from '@src/components/layouts'
-import { TextEditor } from '@src/components/_common'
 import Head from 'next/head'
+import React from 'react'
+
+import { TextEditor } from '@src/components/_common'
 import { NewDocumentModal } from '@src/components/_common/Modal/_variants'
+import { TextEditorLayout } from '@src/components/layouts'
 import { useTextEditorContext } from '@src/contextes'
 
 export const NewPublication = () => {

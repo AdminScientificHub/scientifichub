@@ -1,8 +1,8 @@
-import { TextEditorLayout } from '@src/components/layouts'
-import { TextEditor } from '@src/components/_common'
-
 import Head from 'next/head'
 import React from 'react'
+
+import { TextEditor } from '@src/components/_common'
+import { TextEditorLayout } from '@src/components/layouts'
 
 export const PublicationPreview = () => {
   return (

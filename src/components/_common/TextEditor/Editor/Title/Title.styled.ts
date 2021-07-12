@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+
 import { FONT_FAMILY } from '@src/utils/styles/tokens'
 
 export const StyledTitle = styled('textarea')(() => {

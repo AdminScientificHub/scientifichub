@@ -1,12 +1,13 @@
-import { Heading, Paragraph } from '@src/components/core'
-import { Modal, TModalProps } from '@src/components/_common'
 import React, { FunctionComponent } from 'react'
-import { StyledChooseContainer, StyledChooseItem, StyledContainer } from './Modal.styled'
 
 import EmptyDocIcon from '@src/assets/icons/document.svg'
 import TemplateIcon from '@src/assets/icons/template.svg'
+import { Modal, TModalProps } from '@src/components/_common'
+import { Heading, Paragraph } from '@src/components/core'
 import { useTextEditorContext } from '@src/contextes'
+
 import { PAPER_TEMPLATE } from './constant'
+import { StyledChooseContainer, StyledChooseItem, StyledContainer } from './Modal.styled'
 
 type TProps = {} & TModalProps
 
@@ -19,7 +20,9 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
         'Your publication is not empty, on creating a new document you will permanently delete the old one, are you sure ?',
       )
 
-      if (!confirm) return
+      if (!confirm) {
+        return
+      }
     }
 
     setContent(PAPER_TEMPLATE)
@@ -35,7 +38,9 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
         'Your publication is not empty, on creating a new document you will permanently delete the old one, are you sure ?',
       )
 
-      if (!confirm) return
+      if (!confirm) {
+        return
+      }
     }
 
     editor?.chain().clearContent().focus().run()

@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
+import { NodeViewWrapper } from '@tiptap/react'
+
 import { Flex } from '@src/components/core'
 import { lightenDarkenColor } from '@src/utils/styles/lightenDarkenColor'
 import { FONT_FAMILY } from '@src/utils/styles/tokens'
-import { NodeViewWrapper } from '@tiptap/react'
 
 export const StyledContainer = styled(Flex)(() => {
   return {

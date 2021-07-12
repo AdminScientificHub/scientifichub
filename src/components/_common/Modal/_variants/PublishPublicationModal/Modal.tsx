@@ -1,20 +1,22 @@
-import { Flex, Heading, Paragraph } from '@src/components/core'
-import { Modal, TModalProps } from '@src/components/_common'
-import {
-  StyledPublishContainer,
-  StyledLoadingSpinner,
-  StyledPublishedSuccessfull,
-  StyledCopyKeyboardContainer,
-  StyledCopiedToKeyboard,
-} from './Modal.styled'
+import { useRouter } from 'next/dist/client/router'
 import React, { FunctionComponent, useState } from 'react'
+
 import { FirestoreMutation } from '@react-firebase/firestore'
-import { useTextEditorContext } from '@src/contextes'
 
 import LoadingIcon from '@src/assets/icons/loading.svg'
 import PublishIllustration from '@src/assets/illustrations/publish-publication.svg'
+import { Modal, TModalProps } from '@src/components/_common'
 import { ShareableLinks } from '@src/components/_common/TextEditor/Editor/ShareableLinks'
-import { useRouter } from 'next/dist/client/router'
+import { Flex, Heading, Paragraph } from '@src/components/core'
+import { useTextEditorContext } from '@src/contextes'
+
+import {
+  StyledCopiedToKeyboard,
+  StyledCopyKeyboardContainer,
+  StyledLoadingSpinner,
+  StyledPublishContainer,
+  StyledPublishedSuccessfull,
+} from './Modal.styled'
 
 type TProps = {} & TModalProps
 
@@ -48,7 +50,7 @@ export const PublishPublicationModal: FunctionComponent<TProps> = ({ closeModal,
           <Heading as="h2">Your publication has been posted 🎉</Heading>
           <Paragraph color="text-light">
             Very nice work! Your publication is now available with the link above, we have also
-            generated links for you to share on social medias. Let's bring science to the world
+            generated links for you to share on social medias. Let&apos;s bring science to the world
             together.
           </Paragraph>
           <Heading as="h3">Click to copy it to your keyboard</Heading>

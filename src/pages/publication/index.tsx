@@ -1,7 +1,8 @@
-import { TextEditorLayout } from '@src/components/layouts'
 import { useRouter } from 'next/dist/client/router'
 import Head from 'next/head'
 import React, { useEffect } from 'react'
+
+import { TextEditorLayout } from '@src/components/layouts'
 
 export const RedirectToPublication = () => {
   const router = useRouter()

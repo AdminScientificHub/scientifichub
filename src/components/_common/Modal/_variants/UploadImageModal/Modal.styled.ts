@@ -1,6 +1,8 @@
-import styled from '@emotion/styled'
-import { Flex, Paragraph } from '@src/components/core'
 import { rgba } from 'emotion-rgba'
+
+import styled from '@emotion/styled'
+
+import { Flex } from '@src/components/core'
 
 export const StyledContainer = styled(Flex)<{ isActive: boolean }>(({ isActive }) => {
   return {

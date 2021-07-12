@@ -1,15 +1,16 @@
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react'
+
+import SummaryIllustration from '@src/assets/illustrations/summary.svg'
+import { Heading, Link, Paragraph } from '@src/components/core'
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+
+import { UploadFileModal } from '../..'
 import {
   StyledContainer,
   StyledItem,
   StyledListContainer,
   StyledNoTableOfContentContainer,
 } from './TableOfContent.styled'
-import { Heading, Link, Paragraph } from '@src/components/core'
-
-import SummaryIllustration from '@src/assets/illustrations/summary.svg'
-import { UploadFileModal } from '../..'
 
 type THeading = {
   level: 1 | 2 | 3
@@ -26,7 +27,9 @@ export const TableOfContent: FunctionComponent = () => {
   const { isMobile, isPreviewMode } = useGlobalContext()
 
   const handleUpdate = useCallback(() => {
-    if (!editor) return
+    if (!editor) {
+      return
+    }
 
     const headings: THeading[] = []
     const transaction = editor.state.tr
@@ -80,7 +83,7 @@ export const TableOfContent: FunctionComponent = () => {
     !editor.isDestroyed && editor.view.dispatch(transaction)
 
     setAllHeadings(headings)
-  }, [editor, isModalOpen])
+  }, [editor])
 
   useEffect(() => {
     if (editor) {

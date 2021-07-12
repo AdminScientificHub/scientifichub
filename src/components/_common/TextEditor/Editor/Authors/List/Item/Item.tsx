@@ -1,7 +1,9 @@
-import { Link, Span, Paragraph, Flex } from '@src/components/core'
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
+
+import { Flex, Link, Paragraph, Span } from '@src/components/core'
 import { useGlobalContext } from '@src/contextes'
 import { useClickOutside } from '@src/utils/hooks/useClickOutside'
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
+
 import { TAuthor } from '../..'
 import { StyledAuthorModal } from './Item.styled'
 
@@ -39,7 +41,7 @@ export const AuthorsListItem: FunctionComponent<TProps> = ({ updateAuthor, autho
     if (clickedOutside) {
       setIsModalOpen(false)
     }
-  }, [clickedOutside, authorName, authorLink, author])
+  }, [clickedOutside, authorName, authorLink, author, updateAuthor])
 
   const handleAuthorChanges = (e: React.ChangeEvent<HTMLInputElement>, ctx: 'name' | 'link') => {
     const { value } = e.target

@@ -1,19 +1,20 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
-import { Flex } from '@src/components/core'
 import ReactTooltip from 'react-tooltip'
 
+import { Editor } from '@tiptap/react'
+
 import BoldIcon from '@src/assets/icons/bold.svg'
-import ItalicIcon from '@src/assets/icons/italic.svg'
-import UnderlineIcon from '@src/assets/icons/underline.svg'
-import LinkIcon from '@src/assets/icons/link.svg'
-import NoStylesIcon from '@src/assets/icons/no-styles.svg'
 import HeadingOneIcon from '@src/assets/icons/heading-1.svg'
 import HeadingTwoIcon from '@src/assets/icons/heading-2.svg'
 import HeadingThreeIcon from '@src/assets/icons/heading-3.svg'
+import ItalicIcon from '@src/assets/icons/italic.svg'
+import LinkIcon from '@src/assets/icons/link.svg'
 import MarkerIcon from '@src/assets/icons/marker.svg'
-
+import NoStylesIcon from '@src/assets/icons/no-styles.svg'
+import UnderlineIcon from '@src/assets/icons/underline.svg'
+import { Flex } from '@src/components/core'
 import { useClickOutside } from '@src/utils/hooks/useClickOutside'
-import { Editor } from '@tiptap/react'
+
 import {
   StyledLinkModalContainer,
   StyledSeparator,

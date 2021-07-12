@@ -1,2 +1,2 @@
-export * from './TextEditor'
 export * from './Modal'
+export * from './TextEditor'

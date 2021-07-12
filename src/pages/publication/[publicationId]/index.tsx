@@ -1,9 +1,11 @@
-import React from 'react'
-import { TextEditorLayout } from '@src/components/layouts'
-import { TextEditor } from '@src/components/_common'
-import Head from 'next/head'
 import { useRouter } from 'next/dist/client/router'
+import Head from 'next/head'
+import React from 'react'
+
 import { FirestoreDocument } from '@react-firebase/firestore'
+
+import { TextEditor } from '@src/components/_common'
+import { TextEditorLayout } from '@src/components/layouts'
 
 export const PublicationItem = () => {
   const router = useRouter()

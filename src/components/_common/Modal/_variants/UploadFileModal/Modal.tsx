@@ -1,10 +1,12 @@
-import { Paragraph } from '@src/components/core'
 import React, { FunctionComponent, useCallback, useState } from 'react'
-import { Modal, TModalProps } from '../../Modal'
-import { StyledContainer, StyledLoadingContainer, StyledLoadingSpinner } from './Modal.styled'
 import { useDropzone } from 'react-dropzone'
 
-const fileToArrayBuffer = require('file-to-array-buffer')
+import { Paragraph } from '@src/components/core'
+
+import { Modal, TModalProps } from '../../Modal'
+import { StyledContainer, StyledLoadingContainer, StyledLoadingSpinner } from './Modal.styled'
+
+import fileToArrayBuffer from 'file-to-array-buffer'
 import { convertToHtml } from 'mammoth/mammoth.browser'
 
 import FileUploadIcon from '@src/assets/icons/file-upload.svg'
@@ -22,7 +24,9 @@ export const UploadFileModal: FunctionComponent<TProps> = ({ closeModal, ...prop
     (files: File[]) => {
       const [file] = files
 
-      if (!editor) return
+      if (!editor) {
+        return
+      }
 
       const valited =
         editor.isEmpty ||
@@ -48,7 +52,7 @@ export const UploadFileModal: FunctionComponent<TProps> = ({ closeModal, ...prop
           .done()
       })
     },
-    [editor],
+    [editor, closeModal],
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

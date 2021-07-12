@@ -1,6 +1,8 @@
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 import { useRouter } from 'next/dist/client/router'
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
+
+import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+
 import { Editor } from './Editor'
 import { TAuthor } from './Editor/Authors'
 import { TableOfContent } from './TableOfContent'
@@ -28,7 +30,7 @@ export const TextEditor: FunctionComponent<TProps> = ({
     if (isLiveMode && !isLoading && (!content || !title)) {
       router.push('/publication/error')
     }
-  }, [isLiveMode, isLoading, content, title])
+  }, [isLiveMode, isLoading, content, title, router])
 
   useEffect(() => {
     if (content && title && authors?.length) {
@@ -36,7 +38,7 @@ export const TextEditor: FunctionComponent<TProps> = ({
       setTitle(title)
       setAuthors(authors)
     }
-  }, [content, title, authors])
+  }, [content, title, authors, setAuthors, setContent, setTitle])
 
   return (
     <>

@@ -1,7 +1,8 @@
-import styled from '@emotion/styled'
-import { Flex } from '@src/components/core'
-import { FONT_FAMILY } from '@src/utils/styles/tokens'
 import { rgba } from 'emotion-rgba'
+
+import styled from '@emotion/styled'
+
+import { Flex } from '@src/components/core'
 
 export const StyledFloatingMenuItem = styled(Flex)<{ active?: boolean; isMain?: boolean }>(
   ({ active, isMain }) => {

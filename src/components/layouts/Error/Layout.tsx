@@ -1,5 +1,7 @@
-import { GlobalProvider } from '@src/contextes'
 import React, { FunctionComponent } from 'react'
+
+import { GlobalProvider } from '@src/contextes'
+
 import { Header } from '../TextEditor/Header'
 
 type TProps = {}

@@ -1,12 +1,13 @@
-import { Flex, Heading, Link, Paragraph } from '@src/components/core'
-import { ErrorLayout } from '@src/components/layouts'
+import { useRouter } from 'next/dist/client/router'
 import Head from 'next/head'
 import React from 'react'
 
-import ErrorIllusation from '@src/assets/illustrations/error-publication.svg'
 import styled from '@emotion/styled'
+
+import ErrorIllusation from '@src/assets/illustrations/error-publication.svg'
+import { Flex, Heading, Link, Paragraph } from '@src/components/core'
+import { ErrorLayout } from '@src/components/layouts'
 import { lightenDarkenColor } from '@src/utils/styles/lightenDarkenColor'
-import { useRouter } from 'next/dist/client/router'
 
 const StyledContainer = styled(Flex)(() => {
   return {

@@ -1,5 +1,7 @@
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 import React, { FunctionComponent } from 'react'
+
+import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+
 import { StyledTitle } from './Title.styled'
 
 type TProps = {}

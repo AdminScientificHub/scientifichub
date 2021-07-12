@@ -1,2 +1,2 @@
-export * from './TextEditor'
 export * from './Error'
+export * from './TextEditor'

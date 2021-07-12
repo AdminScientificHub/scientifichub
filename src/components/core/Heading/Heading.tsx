@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react'
+
 import { StyledHeading, TStyledHeadingProps } from './Heading.styled'
 
 type TProps = {} & TStyledHeadingProps

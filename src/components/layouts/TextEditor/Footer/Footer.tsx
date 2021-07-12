@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react'
+
+import { Link } from '@src/components/core'
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 
 import { StyledContainer } from './Footer.styled'
-
 import { FooterToolbar } from './Toolbar'
-import { Link } from '@src/components/core'
 
 type TProps = {}
 

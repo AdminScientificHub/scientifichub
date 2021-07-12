@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useMemo } from 'react'
+
 import { StyledContainer, TParagraphStyles } from './Paragraph.styled'
 
 type TProps = {
@@ -14,7 +15,7 @@ export const Paragraph: FunctionComponent<TProps> = ({ children, ...props }) => 
 
       return item
     })
-  }, [children])
+  }, [children, props])
 
   return <StyledContainer {...props}>{updatedChildren}</StyledContainer>
 }

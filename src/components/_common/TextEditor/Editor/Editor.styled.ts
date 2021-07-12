@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+
 import { Flex } from '@src/components/core'
 import { FONT_FAMILY } from '@src/utils/styles/tokens'
 

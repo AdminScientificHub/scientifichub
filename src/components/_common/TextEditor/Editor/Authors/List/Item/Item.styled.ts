@@ -1,5 +1,6 @@
-import { Flex } from '@src/components/core'
 import styled from '@emotion/styled'
+
+import { Flex } from '@src/components/core'
 
 export const StyledAuthorModal = styled(Flex)(() => {
   return {

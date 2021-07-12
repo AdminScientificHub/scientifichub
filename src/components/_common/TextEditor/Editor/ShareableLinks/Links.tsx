@@ -1,12 +1,13 @@
+import { useRouter } from 'next/dist/client/router'
 import React, { FunctionComponent, useMemo } from 'react'
 import ReactTooltip from 'react-tooltip'
-import { StyledContainer } from './Links.styled'
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
-import { useRouter } from 'next/dist/client/router'
 
-import TwitterIcon from '@src/assets/icons/twitter.svg'
-import LinkedinIcon from '@src/assets/icons/linkedin.svg'
 import FacebookIcon from '@src/assets/icons/facebook.svg'
+import LinkedinIcon from '@src/assets/icons/linkedin.svg'
+import TwitterIcon from '@src/assets/icons/twitter.svg'
+import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+
+import { StyledContainer } from './Links.styled'
 
 type TProps = {
   place?: 'top' | 'right' | 'bottom' | 'left'
@@ -32,6 +33,7 @@ export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) 
           `${title} ${`https://app.scientifichub.io/publication/${publicationId}`}`,
         )}`}
         target="_blank"
+        rel="noreferrer"
       >
         <TwitterIcon
           data-tip={isEditorPreview ? 'Not shareable in preview' : 'Share on Twitter'}
@@ -43,6 +45,7 @@ export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) 
           `https://app.scientifichub.io/publication/${publicationId}`,
         )}&title=${encodeURIComponent(title)}&summary=${editor?.getHTML()}&source=LinkedIn`}
         target="_blank"
+        rel="noreferrer"
       >
         <LinkedinIcon
           data-tip={isEditorPreview ? 'Not shareable in preview' : 'Share on Linkedin'}
@@ -54,6 +57,7 @@ export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) 
           title,
         )}&u=${encodeURIComponent(`https://app.scientifichub.io/publication/${publicationId}`)}`}
         target="_blank"
+        rel="noreferrer"
       >
         <FacebookIcon
           data-tip={isEditorPreview ? 'Not shareable in preview' : 'Share on Facebook'}

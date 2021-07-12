@@ -1,19 +1,20 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
-import { FloatingMenu, EditorContent } from '@tiptap/react'
 import ReactTooltip from 'react-tooltip'
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 
-import { StyledFloatingMenu, StyledFloatingMenuItem } from './Menu.styled'
+import { FloatingMenu } from '@tiptap/react'
 
-import PlusIcon from '@src/assets/icons/plus.svg'
+import BulletListIcon from '@src/assets/icons/bullet-list.svg'
 import HeadingOneIcon from '@src/assets/icons/heading-1.svg'
 import HeadingTwoIcon from '@src/assets/icons/heading-2.svg'
 import HeadingThreeIcon from '@src/assets/icons/heading-3.svg'
-import BulletListIcon from '@src/assets/icons/bullet-list.svg'
+import MarkerIcon from '@src/assets/icons/marker.svg'
 import OrderedListIcon from '@src/assets/icons/ordered-list.svg'
 import PictureIcon from '@src/assets/icons/picture.svg'
-import MarkerIcon from '@src/assets/icons/marker.svg'
+import PlusIcon from '@src/assets/icons/plus.svg'
 import { UploadImageModal } from '@src/components/_common'
+import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+
+import { StyledFloatingMenu, StyledFloatingMenuItem } from './Menu.styled'
 
 type TProps = {}
 

@@ -1,11 +1,12 @@
-import { Flex, Link, Paragraph, Span } from '@src/components/core'
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
-import { StyledAddAuthorBtn, StyledAuthorModal, StyledContainer } from './Authors.styled'
-import { useClickOutside } from '@src/utils/hooks/useClickOutside'
-import { AuthorsList } from './List'
 
 import AddIcon from '@src/assets/icons/plus.svg'
+import { Flex, Paragraph } from '@src/components/core'
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+import { useClickOutside } from '@src/utils/hooks/useClickOutside'
+
+import { StyledAddAuthorBtn, StyledAuthorModal, StyledContainer } from './Authors.styled'
+import { AuthorsList } from './List'
 
 type TProps = {}
 
@@ -37,7 +38,7 @@ export const TextEditorAuthors: FunctionComponent<TProps> = () => {
       setNewAuthorLink('')
       setNewAuthorName('')
     }
-  }, [clickedOutside, newAuthorName, newAuthorLink])
+  }, [clickedOutside, newAuthorName, newAuthorLink, authors, setAuthors])
 
   const handleAuthorChanges = (e: React.ChangeEvent<HTMLInputElement>, ctx: 'name' | 'link') => {
     const { value } = e.target
@@ -101,7 +102,7 @@ export const TextEditorAuthors: FunctionComponent<TProps> = () => {
           <Flex>
             {!authors.length && (
               <Paragraph size="small" color="text-lighter">
-                Click on the '+' to add an author
+                Click on the &apos;+&apos; to add an author
               </Paragraph>
             )}
 

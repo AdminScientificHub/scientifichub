@@ -1,7 +1,9 @@
+import { rgba } from 'emotion-rgba'
+
 import styled from '@emotion/styled'
+
 import { Flex } from '@src/components/core'
 import { lightenDarkenColor } from '@src/utils/styles/lightenDarkenColor'
-import { rgba } from 'emotion-rgba'
 
 export const StyledHeader = styled(Flex)(() => {
   return {

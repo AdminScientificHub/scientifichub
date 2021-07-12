@@ -1,27 +1,29 @@
 import React, { FunctionComponent, useEffect } from 'react'
+
+import BulletListExtension from '@tiptap/extension-bullet-list'
+import FloatingMenuExtension from '@tiptap/extension-floating-menu'
+import HeadingExtension from '@tiptap/extension-heading'
+import ImageExtension from '@tiptap/extension-image'
+import LinkExtension from '@tiptap/extension-link'
+import ListItemExtension from '@tiptap/extension-list-item'
+import OrderedListExtension from '@tiptap/extension-ordered-list'
+import PlaceholderExtension from '@tiptap/extension-placeholder'
+import UnderlineExtension from '@tiptap/extension-underline'
+import { useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
 import {
-  TextEditorProvider,
-  useTextEditorContext,
-  GlobalProvider,
-  useGlobalContext,
   FirebaseProvider,
+  GlobalProvider,
+  TextEditorProvider,
+  useGlobalContext,
+  useTextEditorContext,
 } from '@src/contextes'
+
 import { Content } from './Content'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { StyledContainer } from './Layout.styled'
-
-import { useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import LinkExtension from '@tiptap/extension-link'
-import UnderlineExtension from '@tiptap/extension-underline'
-import PlaceholderExtension from '@tiptap/extension-placeholder'
-import FloatingMenuExtension from '@tiptap/extension-floating-menu'
-import BulletListExtension from '@tiptap/extension-bullet-list'
-import ListItemExtension from '@tiptap/extension-list-item'
-import OrderedListExtension from '@tiptap/extension-ordered-list'
-import HeadingExtension from '@tiptap/extension-heading'
-import ImageExtension from '@tiptap/extension-image'
 
 type TProps = {}
 

@@ -1,6 +1,8 @@
-import { Flex, Link, Paragraph, Span } from '@src/components/core'
-import { useGlobalContext } from '@src/contextes'
 import React, { FunctionComponent } from 'react'
+
+import { Flex } from '@src/components/core'
+import { useGlobalContext } from '@src/contextes'
+
 import { TAuthor } from '..'
 import { AuthorsListItem } from './Item'
 import { StyledAuthorsContainer } from './List.styled'
