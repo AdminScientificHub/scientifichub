@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 
 import { Flex } from '@src/components/core'
 import { lightenDarkenColor } from '@src/utils/styles/lightenDarkenColor'
-import Link from 'next/Link'
 
 export const StyledHeader = styled(Flex)(() => {
   return {
