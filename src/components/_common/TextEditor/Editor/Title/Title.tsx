@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react'
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 
 import { StyledTitle } from './Title.styled'
+import { useEffect } from 'react'
 
 type TProps = {}
 
@@ -11,23 +12,27 @@ export const TextEditorTitle: FunctionComponent<TProps> = () => {
 
   const { isPreviewMode } = useGlobalContext()
 
-  const onTitleChange = (e: any) => {
-    // Allow to have a dynamic textArea height
-    e.target.style.height = '4.8rem'
-    e.target.style.height = e.target.scrollHeight + 'px'
+  useEffect(() => {
+    const titleInput = document.querySelector('#editor-title') as HTMLInputElement
 
-    // Small trick to handle textArea disappearing
-    e.target.style.minHeight = '4.8rem'
-    e.target.style.minHeight = e.target.scrollHeight + 'px'
-  }
+    if (titleInput) {
+      // Allow to have a dynamic textArea height
+      titleInput.style.height = '4.8rem'
+      titleInput.style.height = titleInput.scrollHeight + 'px'
+
+      // Small trick to handle textArea disappearing
+      titleInput.style.minHeight = '4.8rem'
+      titleInput.style.minHeight = titleInput.scrollHeight + 'px'
+    }
+  }, [title])
 
   return (
     <StyledTitle
       disabled={isPreviewMode}
       value={title}
+      id="editor-title"
       placeholder="Publication title"
       onClick={(e: any) => e.stopPropagation()}
-      onInput={onTitleChange}
       onChange={(e: any) => setTitle(e.target.value)}
       onKeyDown={(e: any) => {
         if (e.keyCode === 13) {

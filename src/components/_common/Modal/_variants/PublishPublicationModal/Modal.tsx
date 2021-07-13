@@ -45,7 +45,7 @@ export const PublishPublicationModal: FunctionComponent<TProps> = ({ closeModal,
 
   return (
     <Modal closeModal={closeModal} {...props}>
-      {publicationId ? (
+      {publicationId && !isLoading ? (
         <StyledPublishedSuccessfull direction="column">
           <Heading as="h2">Your publication has been posted 🎉</Heading>
           <Paragraph color="text-light">
@@ -78,29 +78,33 @@ export const PublishPublicationModal: FunctionComponent<TProps> = ({ closeModal,
             contacts. They will see the same thing you do when you preview your publication.
           </Paragraph>
           <Flex justify="end">
-            <FirestoreMutation type="add" path="/publications">
-              {({ runMutation }) => {
-                return (
-                  <button
-                    onClick={() => {
-                      setIsLoading(true)
-                      runMutation({ title, content: editor?.getHTML(), authors }).then(data => {
-                        setIsLoading(false)
-                        data.key && setPublicationId(data.key)
-                      })
-                    }}
-                  >
-                    {isLoading ? (
-                      <StyledLoadingSpinner>
-                        <LoadingIcon />
-                      </StyledLoadingSpinner>
-                    ) : (
-                      'Publish'
-                    )}
-                  </button>
-                )
-              }}
-            </FirestoreMutation>
+            {isLoading ? (
+              <button>
+                <StyledLoadingSpinner>
+                  <LoadingIcon />
+                </StyledLoadingSpinner>
+              </button>
+            ) : (
+              <FirestoreMutation type="add" path="/publications">
+                {({ runMutation }) => {
+                  return (
+                    <button
+                      onClick={() => {
+                        setIsLoading(true)
+                        runMutation({ title, content: editor?.getHTML(), authors }).then(data => {
+                          setTimeout(() => {
+                            setIsLoading(false)
+                          }, 1000)
+                          data.key && setPublicationId(data.key)
+                        })
+                      }}
+                    >
+                      Publish
+                    </button>
+                  )
+                }}
+              </FirestoreMutation>
+            )}
           </Flex>
         </StyledPublishContainer>
       )}

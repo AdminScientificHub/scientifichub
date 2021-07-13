@@ -23,8 +23,6 @@ export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) 
     return query.publicationId
   }, [query.publicationId])
 
-  console.log('title', title)
-
   return (
     <StyledContainer direction="row" areLinksActive={!isEditorPreview}>
       <ReactTooltip place={place} className="tooltip" id="shareable-links" />
