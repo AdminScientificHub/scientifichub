@@ -45,7 +45,7 @@ export const UploadFileModal: FunctionComponent<TProps> = ({ closeModal, ...prop
           .then(function (result: any) {
             setIsFileUploading(false)
 
-            editor.commands.setContent(result.value)
+            editor.commands.setContent(result.value, true)
 
             closeModal()
           })

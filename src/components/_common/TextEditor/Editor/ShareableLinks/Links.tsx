@@ -14,7 +14,7 @@ type TProps = {
 }
 
 export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) => {
-  const { isEditorPreview } = useGlobalContext()
+  const { isLiveMode } = useGlobalContext()
   const { title, editor } = useTextEditorContext()
 
   const { query } = useRouter()
@@ -23,42 +23,50 @@ export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) 
     return query.publicationId
   }, [query.publicationId])
 
+  const twitterLink = useMemo(() => {
+    return `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      `${title} ${`https://app.scientifichub.io/publication/${publicationId}`}`,
+    )}`
+  }, [title, publicationId])
+
+  const linkedinLink = useMemo(() => {
+    const value = editor?.getJSON() as any
+
+    if (!value) return ''
+
+    const firstParagraph = value.content.find(({ type }: any) => type === 'paragraph')
+
+    return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+      `https://app.scientifichub.io/publication/${publicationId}`,
+    )}&title=${encodeURIComponent(title)}${
+      firstParagraph.content ? `&summary=${firstParagraph.content[0].text}` : ''
+    }&source=LinkedIn`
+  }, [publicationId, title, editor])
+
+  const facebookLink = useMemo(() => {
+    return `https://www.facebook.com/sharer.php?t=${encodeURIComponent(
+      title,
+    )}&u=${encodeURIComponent(`https://app.scientifichub.io/publication/${publicationId}`)}`
+  }, [publicationId, title])
+
   return (
-    <StyledContainer direction="row" areLinksActive={!isEditorPreview}>
+    <StyledContainer direction="row" areLinksActive={isLiveMode}>
       <ReactTooltip place={place} className="tooltip" id="shareable-links" />
-      <a
-        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          `${title} ${`https://app.scientifichub.io/publication/${publicationId}`}`,
-        )}`}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={isLiveMode ? twitterLink : undefined} target="_blank" rel="noreferrer">
         <TwitterIcon
-          data-tip={isEditorPreview ? 'Not shareable in preview' : 'Share on Twitter'}
+          data-tip={isLiveMode ? 'Share on Twitter' : 'Not shareable in preview'}
           data-for="shareable-links"
         />
       </a>
-      <a
-        href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
-          `https://app.scientifichub.io/publication/${publicationId}`,
-        )}&title=${encodeURIComponent(title)}&summary=${editor?.getHTML()}&source=LinkedIn`}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={isLiveMode ? linkedinLink : undefined} target="_blank" rel="noreferrer">
         <LinkedinIcon
-          data-tip={isEditorPreview ? 'Not shareable in preview' : 'Share on Linkedin'}
+          data-tip={isLiveMode ? 'Share on Linkedin' : 'Not shareable in preview'}
           data-for="shareable-links"
         />
       </a>
-      <a
-        href={`https://www.facebook.com/sharer.php?t=${encodeURIComponent(
-          title,
-        )}&u=${encodeURIComponent(`https://app.scientifichub.io/publication/${publicationId}`)}`}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={isLiveMode ? facebookLink : undefined} target="_blank" rel="noreferrer">
         <FacebookIcon
-          data-tip={isEditorPreview ? 'Not shareable in preview' : 'Share on Facebook'}
+          data-tip={isLiveMode ? 'Share on Facebook' : 'Not shareable in preview'}
           data-for="shareable-links"
         />
       </a>

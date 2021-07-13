@@ -43,7 +43,7 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
       }
     }
 
-    editor?.chain().clearContent().focus().run()
+    editor?.chain().clearContent(true).focus().run()
     setTitle('')
     setAuthors([])
 
