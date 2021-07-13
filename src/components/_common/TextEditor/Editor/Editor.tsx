@@ -22,7 +22,7 @@ export const Editor: FunctionComponent<TProps> = () => {
       <TextEditorTitle />
       <TextEditorAuthors />
       <StyledEditor>
-        <EditorContent editor={editor} />
+        {editor && <EditorContent editor={editor} />}
         <EditorFloatingMenu />
       </StyledEditor>
     </StyledContainer>

@@ -2,6 +2,7 @@ import HTMLtoDOCX from 'html-to-docx'
 import { useRouter } from 'next/dist/client/router'
 import React, { FunctionComponent, useMemo, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
+import Link from 'next/Link'
 
 import BackIcon from '@src/assets/icons/back.svg'
 import DownloadIcon from '@src/assets/icons/download.svg'
@@ -68,22 +69,25 @@ export const Header: FunctionComponent<TProps> = () => {
         isModalOpen={isNewDocModalOpen}
         closeModal={() => setIsNewDocModalOpen(false)}
       />
-      <StyledLogo href="/">
-        <LogoBetaIcon />
-      </StyledLogo>
+      <Link href="/">
+        <StyledLogo href="/">
+          <LogoBetaIcon />
+        </StyledLogo>
+      </Link>
       <ReactTooltip place="bottom" className="tooltip" id="header" />
 
       <Flex direction="row" align={isLiveMode ? 'center' : 'default'}>
         {isEditorPreview && (
-          <StyledNavigationItem
-            data-tip="Back to editor"
-            data-for="header"
-            justify="center"
-            align="center"
-            onClick={() => push('/publication/new')}
-          >
-            <BackIcon />
-          </StyledNavigationItem>
+          <Link href="/publication/new">
+            <StyledNavigationItem
+              data-tip="Back to editor"
+              data-for="header"
+              justify="center"
+              align="center"
+            >
+              <BackIcon />
+            </StyledNavigationItem>
+          </Link>
         )}
         {isLiveMode && (
           <StyledNewDocumentBtn onClick={() => push('/publication/new')}>

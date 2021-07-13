@@ -63,8 +63,6 @@ export const useTextEditor = (): TTextEditorContext => {
 
       !editor.isDestroyed && editor?.chain().setContent(localDataParsed, true).focus().run()
     }
-
-    return () => editor?.destroy()
   }, [editor, isLiveMode])
 
   useEffect(() => {

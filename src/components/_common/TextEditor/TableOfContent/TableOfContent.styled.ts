@@ -79,6 +79,8 @@ export const StyledItem = styled('a')(() => {
 export const StyledNoTableOfContentContainer = styled(Flex)(() => {
   return {
     '& > *': {
+      whiteSpace: 'initial',
+
       '&:first-child': {
         marginBottom: '2.4rem',
       },
