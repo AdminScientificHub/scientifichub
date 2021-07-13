@@ -2,7 +2,7 @@ import HTMLtoDOCX from 'html-to-docx'
 import { useRouter } from 'next/dist/client/router'
 import React, { FunctionComponent, useMemo, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
-import Link from 'next/Link'
+import Link from 'next/link'
 
 import BackIcon from '@src/assets/icons/back.svg'
 import DownloadIcon from '@src/assets/icons/download.svg'

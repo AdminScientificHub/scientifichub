@@ -48,17 +48,6 @@ module.exports = {
         allowExpressions: true,
       },
     ],
-    'no-restricted-imports': [
-      'warn',
-      {
-        paths: [
-          {
-            name: 'next/link',
-            message: 'Use custom linkTo components instead of next Link',
-          },
-        ],
-      },
-    ],
     'react/jsx-uses-react': 1,
     'react/jsx-uses-vars': 1,
     '@typescript-eslint/no-unused-vars': 'off',
