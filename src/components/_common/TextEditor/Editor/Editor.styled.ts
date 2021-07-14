@@ -95,6 +95,10 @@ export const StyledEditor = styled('div')(() => {
         textDecoration: 'underline',
       },
 
+      img: {
+        maxWidth: '100%',
+      },
+
       ul: {
         li: {
           position: 'relative',
