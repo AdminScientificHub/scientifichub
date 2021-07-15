@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react'
 import EmptyDocIcon from '@src/assets/icons/document.svg'
 import TemplateIcon from '@src/assets/icons/template.svg'
 import { Modal, TModalProps } from '@src/components/_common'
-import { Heading, Paragraph } from '@src/components/core'
+import { Heading, Paragraph, Span } from '@src/components/core'
 import { useTextEditorContext } from '@src/contextes'
 
 import { PAPER_TEMPLATE } from './constant'
@@ -53,21 +53,29 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
   return (
     <Modal closeModal={closeModal} {...props}>
       <StyledContainer direction="column">
-        <Heading as="h2">Bring science to the world 🌍</Heading>
+        <Heading as="h2">Welcome to ScientificHub 👋</Heading>
         <Paragraph color="text-light">
-          The content is not stored online but only locally on your computer. In order not to lose
-          your work, we advise you to download the document regularly. Downloadable links will be
-          generated when your document is published.
+          We are a platform allowing scientists around the world to create, edit and publish
+          scientific content. We want to empower how research communication works and make{' '}
+          <Span textDecoration="underline">science more open</Span>.
+        </Paragraph>
+        <Paragraph color="text-light">
+          Our service aims to make subscription newspapers obsolete. We are working on the creation
+          of a central space for research-related publications: from feedback on false hypotheses to
+          the creation of papers.
+        </Paragraph>
+        <Paragraph color="text-light">
+          We also believe in data protection, which is why your document is stored locally.
         </Paragraph>
       </StyledContainer>
-      <StyledChooseContainer direction="column">
-        <StyledChooseItem align="center" onClick={createEmptyPublication}>
+      <StyledChooseContainer direction="row">
+        <StyledChooseItem direction="column" align="start" onClick={createEmptyPublication}>
           <EmptyDocIcon />
-          <Paragraph>Start from blank</Paragraph>
+          <Paragraph>Blank document</Paragraph>
         </StyledChooseItem>
-        <StyledChooseItem align="center" onClick={createPaperPublicationTemplate}>
+        <StyledChooseItem direction="column" align="start" onClick={createPaperPublicationTemplate}>
           <TemplateIcon />
-          <Paragraph>Use paper publication template</Paragraph>
+          <Paragraph>Paper template</Paragraph>
         </StyledChooseItem>
       </StyledChooseContainer>
     </Modal>

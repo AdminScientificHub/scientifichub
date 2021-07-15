@@ -6,19 +6,24 @@ import { Flex } from '@src/components/core'
 
 export const StyledContainer = styled(Flex)(() => {
   return {
+    '& > *': {
+      '&:not(:last-child)': {
+        marginBottom: '.8rem',
+      },
+    },
     h2: {
-      marginBottom: '1.6rem',
+      marginBottom: '2.4rem !important',
     },
   }
 })
 
 export const StyledChooseContainer = styled(Flex)(() => {
   return {
-    marginTop: '1.6rem',
+    marginTop: '2.4rem',
 
     '& > *': {
       '&:not(:last-child)': {
-        marginBottom: '.8rem',
+        marginRight: '2.4rem',
       },
     },
   }
@@ -26,10 +31,12 @@ export const StyledChooseContainer = styled(Flex)(() => {
 
 export const StyledChooseItem = styled(Flex)(() => {
   return {
-    padding: '.8rem 1.2rem',
-    borderRadius: '.4rem',
+    padding: '1.6rem',
+    borderRadius: '1.2rem',
     cursor: 'pointer',
     transition: 'all .2s ease',
+    maxWidth: '12.5rem',
+    border: `.1rem solid ${rgba('#000000', 0.1)}`,
 
     '&:hover': {
       backgroundColor: rgba('#000000', 0.05),
@@ -37,7 +44,7 @@ export const StyledChooseItem = styled(Flex)(() => {
 
     svg: {
       height: '3rem',
-      marginRight: '1.2rem',
+      marginBottom: '.8rem',
     },
   }
 })

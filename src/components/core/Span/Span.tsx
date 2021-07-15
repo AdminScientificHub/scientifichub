@@ -11,6 +11,7 @@ export const Span: FunctionComponent<TProps> = ({ children, ...props }) => {
 Span.defaultProps = {
   color: 'default',
   size: 'regular',
+  textDecoration: 'none',
 }
 
 export type TSpanProps = TProps
