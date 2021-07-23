@@ -22,6 +22,6 @@
     "resolveJsonModule": true,
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/_common/TextEditor/_extensions/MathBlock/MathBlock.js"],
   "files": ["@types/svg.d.ts", "@types/index.d.ts"]
 }

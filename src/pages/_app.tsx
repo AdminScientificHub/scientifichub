@@ -81,7 +81,7 @@ class App extends AppType<AppContext & WithUserAgentProps & {}, AppInitialProps>
   }
 }
 
-export const reportWebVitals = ({ id, name, label, value }: NextWebVitalsMetric) => {
+export const reportWebVitals = ({ id, name, label, value }: NextWebVitalsMetric): any => {
   ;(window as any).gtag('event', name, {
     event_category: label === 'web-vital' ? 'Web Vitals' : 'Next.js custom metric',
     value: Math.round(name === 'CLS' ? value * 1000 : value), // values must be integers

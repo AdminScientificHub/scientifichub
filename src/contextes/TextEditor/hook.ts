@@ -1,5 +1,6 @@
 import { TAuthor } from '@src/components/_common/TextEditor/Editor/Authors'
 import { Editor } from '@tiptap/react'
+
 import { useRouter } from 'next/dist/client/router'
 
 import { useEffect, useState } from 'react'
@@ -20,7 +21,9 @@ export const useTextEditor = (): TTextEditorContext => {
     if (pathname === '/publication/new') {
       const localData = localStorage.getItem('editor')
 
-      if (localData) return
+      if (localData) {
+        return
+      }
 
       setIsNewDocumentModalOpen(true)
     }
@@ -35,11 +38,13 @@ export const useTextEditor = (): TTextEditorContext => {
     if (isPreviewPage && (!title || !parsedData.content.length) && editor) {
       push('/publication/new')
     }
-  }, [pathname, isPreviewMode, title, editor])
+  }, [pathname, isPreviewMode, title, editor, push])
 
   // Update cache on update
   useEffect(() => {
-    if (!editor || isLiveMode) return
+    if (!editor || isLiveMode) {
+      return
+    }
 
     const localData = localStorage.getItem('editor')
 
@@ -58,17 +63,19 @@ export const useTextEditor = (): TTextEditorContext => {
       )
     })
 
-    if (localData) {
+    if (localData && !editor.isDestroyed) {
       const localDataParsed = JSON.parse(localData)
 
-      !editor.isDestroyed && editor?.chain().setContent(localDataParsed, true).focus().run()
+      editor?.chain().setContent(localDataParsed, true).run()
     }
   }, [editor, isLiveMode])
 
   useEffect(() => {
     const localData = localStorage.getItem('editor')
 
-    if (isLiveMode || !localData) return
+    if (isLiveMode || !localData) {
+      return
+    }
 
     const parsedData = JSON.parse(localData)
 
@@ -81,7 +88,9 @@ export const useTextEditor = (): TTextEditorContext => {
 
     setTitle(newTitle)
 
-    if (isLiveMode) return
+    if (isLiveMode) {
+      return
+    }
 
     if (localData) {
       localStorage.setItem(
@@ -99,20 +108,22 @@ export const useTextEditor = (): TTextEditorContext => {
     localStorage.setItem('editor', JSON.stringify(editor?.getJSON()))
   }
 
-  const handleAuthorsChange = (authors: TAuthor[]) => {
+  const handleAuthorsChange = (newAuthors: TAuthor[]) => {
     const localData = localStorage.getItem('editor')
 
-    setAuthors(authors)
+    setAuthors(newAuthors)
 
-    if (isLiveMode) return
+    if (isLiveMode) {
+      return
+    }
 
     if (localData) {
       localStorage.setItem(
         'editor',
-        JSON.stringify({ ...(localData && JSON.parse(localData)), authors }),
+        JSON.stringify({ ...(localData && JSON.parse(localData)), authors: newAuthors }),
       )
     } else {
-      localStorage.setItem('editor', JSON.stringify({ authors }))
+      localStorage.setItem('editor', JSON.stringify({ authors: newAuthors }))
     }
   }
 

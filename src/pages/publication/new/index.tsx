@@ -19,6 +19,7 @@ export const NewPublication = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <NewDocumentModal
         isModalOpen={isNewDocumentModalOpen}
         closeModal={() => setIsNewDocumentModalOpen(false)}

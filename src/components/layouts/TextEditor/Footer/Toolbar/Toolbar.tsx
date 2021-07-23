@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
-
 import { Editor } from '@tiptap/react'
+import { Flex } from '@src/components/core'
+import { useClickOutside } from '@src/utils/hooks/useClickOutside'
 
 import BoldIcon from '@src/assets/icons/bold.svg'
 import HeadingOneIcon from '@src/assets/icons/heading-1.svg'
@@ -12,8 +13,7 @@ import LinkIcon from '@src/assets/icons/link.svg'
 import MarkerIcon from '@src/assets/icons/marker.svg'
 import NoStylesIcon from '@src/assets/icons/no-styles.svg'
 import UnderlineIcon from '@src/assets/icons/underline.svg'
-import { Flex } from '@src/components/core'
-import { useClickOutside } from '@src/utils/hooks/useClickOutside'
+import EquationIcon from '@src/assets/icons/equation.svg'
 
 import {
   StyledLinkModalContainer,
@@ -141,6 +141,16 @@ export const FooterToolbar: FunctionComponent<TProps> = ({ editor }) => {
         >
           <MarkerIcon />
         </StyledTextEditItem>
+        {/* <StyledTextEditItem
+          align="center"
+          justify="center"
+          onClick={() => editor.chain().focus().toggleMathInlineMark().run()}
+          active={editor.isActive('mathInlineMark')}
+          data-tip="Equation"
+          data-for="footer"
+        >
+          <EquationIcon />
+        </StyledTextEditItem> */}
         <StyledSeparator />
         <StyledTextEditItem
           align="center"

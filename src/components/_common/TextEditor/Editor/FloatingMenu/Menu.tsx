@@ -3,6 +3,9 @@ import ReactTooltip from 'react-tooltip'
 
 import { FloatingMenu } from '@tiptap/react'
 
+import { UploadImageModal } from '@src/components/_common'
+import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+
 import BulletListIcon from '@src/assets/icons/bullet-list.svg'
 import HeadingOneIcon from '@src/assets/icons/heading-1.svg'
 import HeadingTwoIcon from '@src/assets/icons/heading-2.svg'
@@ -11,8 +14,7 @@ import MarkerIcon from '@src/assets/icons/marker.svg'
 import OrderedListIcon from '@src/assets/icons/ordered-list.svg'
 import PictureIcon from '@src/assets/icons/picture.svg'
 import PlusIcon from '@src/assets/icons/plus.svg'
-import { UploadImageModal } from '@src/components/_common'
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+import EquationIcon from '@src/assets/icons/equation.svg'
 
 import { StyledFloatingMenu, StyledFloatingMenuItem } from './Menu.styled'
 
@@ -23,7 +25,7 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
   const { editor } = useTextEditorContext()
-  const { isPreviewMode, isMobile } = useGlobalContext()
+  const { isPreviewMode } = useGlobalContext()
 
   useEffect(() => {
     editor?.on('transaction', () => {
@@ -42,7 +44,25 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
   }
 
   return (
-    <FloatingMenu tippyOptions={{ offset: [0, isMobile ? -25 : -50] }} editor={editor}>
+    <FloatingMenu
+      tippyOptions={{
+        offset: [0, -50],
+        maxWidth: 'initial',
+        zIndex: 10,
+        onBeforeUpdate: props => {
+          const { from, to } = editor.state.selection
+
+          editor.state.doc.nodesBetween(from, to, node => {
+            if (node.type.name === 'mathBlock') {
+              props.disable()
+            } else {
+              props.enable()
+            }
+          })
+        },
+      }}
+      editor={editor}
+    >
       <UploadImageModal
         closeModal={() => setIsImageModalOpen(false)}
         isModalOpen={isImageModalOpen}
@@ -132,6 +152,16 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
                 active={editor.isActive('blockquote')}
               >
                 <MarkerIcon />
+              </StyledFloatingMenuItem>
+              <StyledFloatingMenuItem
+                align="center"
+                justify="center"
+                data-tip="Equation"
+                data-for="floating-menu"
+                onClick={() => editor.chain().setMathBlock().run()}
+                active={editor.isActive('blockquote')}
+              >
+                <EquationIcon />
               </StyledFloatingMenuItem>
             </>
           )}

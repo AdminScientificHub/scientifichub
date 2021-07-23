@@ -4,18 +4,14 @@ import React, { FunctionComponent, useMemo, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import Link from 'next/link'
 
-import BackIcon from '@src/assets/icons/back.svg'
-import DownloadIcon from '@src/assets/icons/download.svg'
 import LogoBetaIcon from '@src/assets/icons/logo-beta.svg'
-import NewDocumentIcon from '@src/assets/icons/new-document.svg'
-import PreviewIcon from '@src/assets/icons/preview.svg'
-import PublishIcon from '@src/assets/icons/publish.svg'
-import UploadIcon from '@src/assets/icons/upload.svg'
+
 import { NewDocumentModal, PublishPublicationModal, UploadFileModal } from '@src/components/_common'
-import { Flex } from '@src/components/core'
+import { Flex, Span } from '@src/components/core'
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 
 import {
+  StyledActionsContainer,
   StyledHeader,
   StyledLogo,
   StyledNavigationItem,
@@ -30,7 +26,7 @@ export const Header: FunctionComponent<TProps> = () => {
   const [isNewDocModalOpen, setIsNewDocModalOpen] = useState(false)
 
   const { title, editor, authors } = useTextEditorContext()
-  const { isPreviewMode, isLiveMode, isEditorPreview, isErrorPage } = useGlobalContext()
+  const { isPreviewMode, isLiveMode, isEditorPreview, isErrorPage, isMobile } = useGlobalContext()
 
   const { push } = useRouter()
 
@@ -78,70 +74,62 @@ export const Header: FunctionComponent<TProps> = () => {
 
       <Flex direction="row" align={isLiveMode ? 'center' : 'default'}>
         {isEditorPreview && (
-          <Link href="/publication/new">
-            <StyledNavigationItem
-              data-tip="Back to editor"
-              data-for="header"
-              justify="center"
-              align="center"
-            >
-              <BackIcon />
-            </StyledNavigationItem>
-          </Link>
+          <StyledActionsContainer align="center">
+            <Link href="/publication/new">
+              <StyledNavigationItem
+                data-tip="Back to editor"
+                data-for="header"
+                justify="center"
+                align="center"
+              >
+                <Span size="small">Back to editor</Span>
+              </StyledNavigationItem>
+            </Link>
+          </StyledActionsContainer>
         )}
         {isLiveMode && (
           <StyledNewDocumentBtn onClick={() => push('/publication/new')}>
             Write a publication <span>- It’s Free</span>
           </StyledNewDocumentBtn>
         )}
-        {!isPreviewMode && !isErrorPage && (
-          <>
+        {!isPreviewMode && !isErrorPage && !isMobile && (
+          <StyledActionsContainer align="center">
             <StyledNavigationItem
-              data-tip="Upload"
-              data-for="header"
-              justify="center"
-              align="center"
-              onClick={() => setIsFileUploadModalOpen(true)}
-            >
-              <UploadIcon />
-            </StyledNavigationItem>
-            <StyledNavigationItem
-              data-tip="Create"
-              data-for="header"
               justify="center"
               align="center"
               onClick={() => setIsNewDocModalOpen(true)}
             >
-              <NewDocumentIcon />
+              <Span size="small">New</Span>
             </StyledNavigationItem>
             <StyledNavigationItem
-              data-tip="Download"
-              data-for="header"
               justify="center"
               align="center"
-              onClick={downloadDocument}
+              onClick={() => setIsFileUploadModalOpen(true)}
             >
-              <DownloadIcon />
+              <Span size="small">Import</Span>
+            </StyledNavigationItem>
+
+            <StyledNavigationItem justify="center" align="center" onClick={downloadDocument}>
+              <Span size="small">Export</Span>
             </StyledNavigationItem>
             <StyledNavigationItem
               data-tip={
                 canBePreview
                   ? 'Preview'
-                  : 'Need title, content, and at least one author to be preview'
+                  : 'Need title, content, and at least one author to be previewed'
               }
-              data-for="header"
               justify="center"
               align="center"
               inactive={!canBePreview}
               onClick={() => canBePreview && push('/publication/preview')}
             >
-              <PreviewIcon />
+              <Span size="small">Preview</Span>
             </StyledNavigationItem>
             <StyledNavigationItem
               data-tip={
                 canBePreview
                   ? 'Publish'
-                  : 'Need title, content, and at least one author to be publish'
+                  : 'Need title, content, and at least one author to be published'
               }
               data-for="header"
               justify="center"
@@ -149,9 +137,9 @@ export const Header: FunctionComponent<TProps> = () => {
               inactive={!canBePreview}
               onClick={() => canBePreview && setIsPublishingModalOpen(true)}
             >
-              <PublishIcon />
+              <Span size="small">Publish</Span>
             </StyledNavigationItem>
-          </>
+          </StyledActionsContainer>
         )}
       </Flex>
     </StyledHeader>

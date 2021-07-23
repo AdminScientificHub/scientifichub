@@ -7,6 +7,7 @@ export const StyledContainer = styled(Flex)(() => {
   return {
     padding: '20% 6.4rem 0',
     height: '100%',
+    overflow: 'auto',
 
     '@media only screen and (max-width: 900px)': {
       padding: '4rem 6.4rem 0',
@@ -24,7 +25,7 @@ export const StyledContainer = styled(Flex)(() => {
 
 export const StyledEditor = styled('div')(() => {
   return {
-    paddingBottom: '12rem',
+    paddingBottom: '25rem',
 
     '.ProseMirror': {
       fontFamily: FONT_FAMILY,
@@ -36,7 +37,19 @@ export const StyledEditor = styled('div')(() => {
         },
       },
 
-      'p.is-editor-empty:first-child::before': {
+      '.ProseMirror-gapcursor': {
+        height: '2.4rem',
+        width: '100%',
+
+        '&:after': {
+          top: 0,
+          height: '2rem',
+          width: '0.1rem',
+          backgroundColor: '#000',
+        },
+      },
+
+      'p.is-empty::before': {
         content: ' attr(data-placeholder)',
         float: 'left',
         color: '#ced4da',
@@ -97,9 +110,17 @@ export const StyledEditor = styled('div')(() => {
 
       img: {
         maxWidth: '100%',
+        display: 'block',
+        margin: '.8rem 0',
+
+        '&.ProseMirror-selectednode': {
+          outline: '.3rem solid #68CEF8',
+        },
       },
 
       ul: {
+        marginLeft: '1.2rem',
+
         li: {
           position: 'relative',
 
@@ -122,6 +143,7 @@ export const StyledEditor = styled('div')(() => {
 
       ol: {
         counterReset: 'ol-counter',
+        marginLeft: '1.2rem',
 
         li: {
           counterIncrement: 'ol-counter',
@@ -130,8 +152,6 @@ export const StyledEditor = styled('div')(() => {
           '&:before': {
             content: 'counter(ol-counter) "."',
             position: 'absolute',
-            top: '50%',
-            transform: 'translateY(-50%)',
             fontSize: '1.6rem',
             lineHeight: '2.4rem',
             fontWeight: 500,

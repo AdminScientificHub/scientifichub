@@ -14,10 +14,21 @@ const StyledContainer = styled(Flex)(() => {
     height: 'calc(100vh - 4rem)',
     maxWidth: '60%',
     margin: '0 auto',
+    '@media only screen and (max-width: 550px)': {
+      margin: '0 3.2rem',
+      maxWidth: '100%',
+    },
+
     svg: {
       width: '30%',
       minWidth: '30rem',
       marginBottom: '3.2rem',
+
+      '@media only screen and (max-width: 550px)': {
+        width: '30%',
+        minWidth: '15rem',
+        marginBottom: '3.2rem',
+      },
     },
     h1: {
       marginBottom: '1.6rem',
@@ -57,7 +68,9 @@ export const PublicationItemError = () => {
       </Head>
       <StyledContainer direction="column" align="center" justify="center">
         <ErrorIllusation />
-        <Heading as="h1">We couldn’t find the publication</Heading>
+        <Heading textAlign="center" as="h1">
+          We couldn’t find the publication
+        </Heading>
         <Paragraph color="text-light" textAlign="center">
           If you think this is a mistake you can{' '}
           <Link href="mailto:maxence@scientifichub.io" size="regular">

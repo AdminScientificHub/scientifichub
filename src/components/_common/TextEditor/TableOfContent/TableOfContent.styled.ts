@@ -14,6 +14,7 @@ export const StyledContainer = styled(Flex)(() => {
 
       '@media only screen and (max-width: 900px)': {
         minHeight: 'initial',
+        maxHeight: 'initial',
       },
     },
 
@@ -21,6 +22,7 @@ export const StyledContainer = styled(Flex)(() => {
       margin: '0 6.4rem',
       padding: '4rem 0',
       borderBottom: '1px solid #E5E5E5',
+      overflow: 'initial !important',
 
       h2: {
         marginBottom: '2rem',

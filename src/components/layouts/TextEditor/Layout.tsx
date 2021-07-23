@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 
 import BulletListExtension from '@tiptap/extension-bullet-list'
 import FloatingMenuExtension from '@tiptap/extension-floating-menu'
@@ -9,8 +9,17 @@ import ListItemExtension from '@tiptap/extension-list-item'
 import OrderedListExtension from '@tiptap/extension-ordered-list'
 import PlaceholderExtension from '@tiptap/extension-placeholder'
 import UnderlineExtension from '@tiptap/extension-underline'
+import {
+  Indent as IndentExtension,
+  MathBlock as MathBlockExtension,
+  MathInline as MathInlineExtension,
+  MathInlineMark as MathInlineMarkExtension,
+} from '@src/components/_common/TextEditor/_extensions'
+
 import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+
+import NoMobileIllustration from '@src/assets/illustrations/no-mobile.svg'
 
 import {
   FirebaseProvider,
@@ -23,13 +32,20 @@ import {
 import { Content } from './Content'
 import { Footer } from './Footer'
 import { Header } from './Header'
-import { StyledContainer } from './Layout.styled'
+import { StyledContainer, StyledNoMobileContainer } from './Layout.styled'
+import { Heading, Link, Paragraph } from '@src/components/core'
 
 type TProps = {}
 
 export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children }) => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const { editor, setEditor } = useTextEditorContext()
-  const { isPreviewMode } = useGlobalContext()
+  const { isPreviewMode, isMobile } = useGlobalContext()
 
   useEffect(() => {
     if (editor) {
@@ -39,6 +55,7 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
 
   const editorContext = useEditor({
     extensions: [
+      MathBlockExtension,
       StarterKit,
       PlaceholderExtension.configure({
         placeholder: 'Write or paste (⌘+V) your text here',
@@ -48,12 +65,15 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
           target: '_blank',
         },
       }),
+      IndentExtension,
       UnderlineExtension,
       FloatingMenuExtension,
       OrderedListExtension,
       BulletListExtension,
       ListItemExtension,
+      MathInlineExtension,
       ImageExtension,
+      MathInlineMarkExtension,
       HeadingExtension.extend({
         addGlobalAttributes() {
           return [
@@ -71,6 +91,10 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
     ],
   })
 
+  const backToHome = () => {
+    window.location.href = 'https://www.scientifichub.io/'
+  }
+
   useEffect(() => {
     setEditor(editorContext)
   }, [editorContext, setEditor])
@@ -78,8 +102,27 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
   return (
     <StyledContainer isPreviewMode={isPreviewMode}>
       <Header />
-      <Content>{children}</Content>
-      <Footer />
+      {!isMobile && !isPreviewMode ? (
+        <>
+          <Content>{children}</Content>
+          <Footer />
+        </>
+      ) : (
+        <StyledNoMobileContainer direction="column" align="center" justify="center">
+          <NoMobileIllustration />
+          <Heading textAlign="center" as="h1">
+            Our editor is not available in mobile version for the moment
+          </Heading>
+          <Paragraph color="text-light" textAlign="center">
+            If you think this is a mistake you can{' '}
+            <Link href="mailto:maxence@scientifichub.io" size="regular">
+              contact us
+            </Link>
+            , sorry for the inconvenience.
+          </Paragraph>
+          {mounted && <button onClick={backToHome}>Back to home page</button>}
+        </StyledNoMobileContainer>
+      )}
     </StyledContainer>
   )
 }

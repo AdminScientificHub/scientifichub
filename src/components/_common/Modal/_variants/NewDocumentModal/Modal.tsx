@@ -1,17 +1,21 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 
 import EmptyDocIcon from '@src/assets/icons/document.svg'
 import TemplateIcon from '@src/assets/icons/template.svg'
+import ExempleTemplateIcon from '@src/assets/icons/exemple-document.svg'
 import { Modal, TModalProps } from '@src/components/_common'
 import { Heading, Paragraph, Span } from '@src/components/core'
 import { useTextEditorContext } from '@src/contextes'
 
-import { PAPER_TEMPLATE } from './constant'
+import { EXEMPLE_TEMPLATE, PAPER_TEMPLATE } from './constant'
 import { StyledChooseContainer, StyledChooseItem, StyledContainer } from './Modal.styled'
+import { useEffect } from 'react'
 
 type TProps = {} & TModalProps
 
 export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...props }) => {
+  const [isFirstVisit, setIsFirstVisit] = useState(false)
+
   const { setContent, editor, setTitle, setAuthors, title, authors } = useTextEditorContext()
 
   const createPaperPublicationTemplate = () => {
@@ -26,8 +30,31 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
     }
 
     setContent(PAPER_TEMPLATE)
-    setTitle('')
+    setTitle('ON THE ELECTRODYNAMICS OF MOVING BODIES')
     setAuthors([])
+
+    closeModal()
+  }
+
+  const createExemplePublicationTemplate = () => {
+    if (authors.length || title || !editor?.isEmpty) {
+      const confirm = window.confirm(
+        'Your publication is not empty, on creating a new document you will permanently delete the old one, are you sure ?',
+      )
+
+      if (!confirm) {
+        return
+      }
+    }
+
+    setContent(EXEMPLE_TEMPLATE)
+    setTitle('ON THE ELECTRODYNAMICS OF MOVING BODIES')
+    setAuthors([
+      {
+        name: 'Albert Einstein',
+        link: 'https://www.fourmilab.ch/etexts/einstein/specrel/specrel.pdf',
+      },
+    ])
 
     closeModal()
   }
@@ -44,16 +71,30 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
     }
 
     editor?.chain().clearContent(true).focus().run()
+
     setTitle('')
     setAuthors([])
 
     closeModal()
   }
 
+  useEffect(() => {
+    const localStorageFirstVisit = localStorage.getItem('firstVisit')
+
+    if (localStorageFirstVisit) {
+      return
+    }
+
+    setIsFirstVisit(true)
+    localStorage.setItem('firstVisit', 'true')
+  }, [])
+
   return (
     <Modal closeModal={closeModal} {...props}>
       <StyledContainer direction="column">
-        <Heading as="h2">Welcome to ScientificHub 👋</Heading>
+        <Heading as="h2">
+          {isFirstVisit ? 'Welcome to ScientificHub 👋' : 'Bring science to the world 🌍'}
+        </Heading>
         <Paragraph color="text-light">
           We are a platform allowing scientists around the world to create, edit and publish
           scientific content. We want to empower how research communication works and make{' '}
@@ -69,13 +110,21 @@ export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...pro
         </Paragraph>
       </StyledContainer>
       <StyledChooseContainer direction="row">
+        <StyledChooseItem
+          direction="column"
+          align="start"
+          onClick={createExemplePublicationTemplate}
+        >
+          <ExempleTemplateIcon />
+          <Paragraph>Document exemple</Paragraph>
+        </StyledChooseItem>
         <StyledChooseItem direction="column" align="start" onClick={createEmptyPublication}>
           <EmptyDocIcon />
           <Paragraph>Blank document</Paragraph>
         </StyledChooseItem>
         <StyledChooseItem direction="column" align="start" onClick={createPaperPublicationTemplate}>
           <TemplateIcon />
-          <Paragraph>Paper template</Paragraph>
+          <Paragraph>Paper templarte</Paragraph>
         </StyledChooseItem>
       </StyledChooseContainer>
     </Modal>

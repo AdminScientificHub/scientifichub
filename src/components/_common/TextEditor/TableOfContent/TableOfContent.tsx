@@ -92,7 +92,7 @@ export const TableOfContent: FunctionComponent = () => {
     }
   }, [editor, handleUpdate])
 
-  if (isPreviewMode && !allHeadings.length) {
+  if ((isPreviewMode && !allHeadings.length) || isMobile) {
     return <></>
   }
 

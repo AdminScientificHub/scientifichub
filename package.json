@@ -5,7 +5,7 @@
   "author": "ScientificHub",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -33,6 +33,7 @@
     "firebase": "^8.7.1",
     "html-to-docx": "^1.2.1",
     "i": "^0.3.6",
+    "katex": "^0.13.11",
     "mammoth": "^1.4.17",
     "next": "11.0.0",
     "next-images": "^1.8.1",
@@ -45,13 +46,16 @@
     "react-dropzone": "^11.3.4",
     "react-modal": "^3.14.3",
     "react-responsive": "^8.2.0",
-    "react-tooltip": "^4.2.21"
+    "react-tooltip": "^4.2.21",
+    "tiptap": "^1.32.2",
+    "tiptap-commands": "^1.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-react": "7.14.5",
     "@emotion/babel-plugin": "^11.3.0",
     "@emotion/eslint-plugin": "^11.2.0",
+    "@types/katex": "^0.11.1",
     "@types/node": "^15.12.4",
     "@types/react": "17.0.11",
     "@types/react-dom": "^17.0.8",

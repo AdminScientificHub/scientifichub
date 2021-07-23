@@ -2,9 +2,10 @@ import styled, { CSSObject } from '@emotion/styled'
 
 type TProps = {
   as: 'h1' | 'h2' | 'h3'
+  textAlign?: 'center' | 'right' | 'left'
 }
 
-export const StyledHeading = styled('div')<TProps>(({ as }) => {
+export const StyledHeading = styled('div')<TProps>(({ as, textAlign }) => {
   const headingOneStyle: CSSObject = {
     fontWeight: 700,
     color: '#000',
@@ -28,11 +29,14 @@ export const StyledHeading = styled('div')<TProps>(({ as }) => {
 
   switch (as) {
     case 'h1':
-      return headingOneStyle
+      return {
+        ...headingOneStyle,
+        textAlign,
+      }
     case 'h2':
-      return headingTwoStyle
+      return { ...headingTwoStyle, textAlign }
     case 'h3':
-      return headingThreeStyle
+      return { ...headingThreeStyle, textAlign }
     default:
       return {}
   }

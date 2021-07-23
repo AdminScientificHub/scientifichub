@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 export const modalStyle: Modal.Styles = {
   overlay: {
     backgroundColor: rgba('#000000', 0.2),
+    zIndex: 11,
   },
   content: {
     top: '50%',

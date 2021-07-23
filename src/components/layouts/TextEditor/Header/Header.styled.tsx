@@ -51,11 +51,11 @@ export const StyledLogo = styled('a')(() => {
 
 export const StyledNavigationItem = styled(Flex)<{ inactive?: boolean }>(({ inactive }) => {
   return {
-    width: '40px',
-    height: '40px',
-    borderLeft: `1px solid #E5E5E5`,
     transition: 'all .2s ease',
     cursor: 'pointer',
+    padding: '.8rem',
+    height: '2.8rem',
+    borderRadius: '.4rem',
 
     ...(inactive
       ? {
@@ -72,6 +72,17 @@ export const StyledNavigationItem = styled(Flex)<{ inactive?: boolean }>(({ inac
 
     '& > svg': {
       height: '1.6rem',
+    },
+  }
+})
+
+export const StyledActionsContainer = styled(Flex)(() => {
+  return {
+    marginRight: '2.4rem',
+    '& > *': {
+      '&:not(:last-child)': {
+        marginRight: '.8rem',
+      },
     },
   }
 })
