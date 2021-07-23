@@ -13,7 +13,6 @@ import LinkIcon from '@src/assets/icons/link.svg'
 import MarkerIcon from '@src/assets/icons/marker.svg'
 import NoStylesIcon from '@src/assets/icons/no-styles.svg'
 import UnderlineIcon from '@src/assets/icons/underline.svg'
-import EquationIcon from '@src/assets/icons/equation.svg'
 
 import {
   StyledLinkModalContainer,

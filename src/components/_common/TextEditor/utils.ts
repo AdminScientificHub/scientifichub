@@ -45,9 +45,6 @@ export const deleteMathBlock = (state: any, dispatch: any, view: any): any => {
  * @param indentText - Text in the math block that represent an indentation
  * @param indentSize - Size of the indentation token in a string
  */
-function getIndentLevel(indentText: any, indentSize: any) {
-  return indentSize && indentText.length ? indentText.length / indentSize : 0
-}
 
 function indent(state: any, dispatch: any) {
   const { text, start } = getLinesFromSelection(state)
@@ -75,10 +72,9 @@ function indent(state: any, dispatch: any) {
 function undent(state: any, dispatch: any) {
   const { text, start } = getLinesFromSelection(state)
   const { tr } = state
-  forEachLine(text, (line, offset) => {
+  forEachLine(text, (line: any, offset: any) => {
     const { indentText, indentToken } = getLineInfo(line)
     if (indentText) {
-      const indentLevel = getIndentLevel(indentText, indentToken.size)
       const undentLength = indentText.length % indentToken.size || indentToken.size
       tr.delete(tr.mapping.map(start + offset), tr.mapping.map(start + offset + undentLength))
     }
