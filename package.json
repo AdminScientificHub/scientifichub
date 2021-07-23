@@ -6,9 +6,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build",
+    "build": "rm -rf ./node_modules && next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "engines": {
+    "node": "14.17.0"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",
