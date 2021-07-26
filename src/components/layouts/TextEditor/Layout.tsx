@@ -102,12 +102,7 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
   return (
     <StyledContainer isPreviewMode={isPreviewMode}>
       <Header />
-      {!isMobile && !isPreviewMode ? (
-        <>
-          <Content>{children}</Content>
-          <Footer />
-        </>
-      ) : (
+      {isMobile && !isPreviewMode ? (
         <StyledNoMobileContainer direction="column" align="center" justify="center">
           <NoMobileIllustration />
           <Heading textAlign="center" as="h1">
@@ -122,6 +117,11 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
           </Paragraph>
           {mounted && <button onClick={backToHome}>Back to home page</button>}
         </StyledNoMobileContainer>
+      ) : (
+        <>
+          <Content>{children}</Content>
+          <Footer />
+        </>
       )}
     </StyledContainer>
   )
