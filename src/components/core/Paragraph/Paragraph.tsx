@@ -10,7 +10,7 @@ export const Paragraph: FunctionComponent<TProps> = ({ children, ...props }) => 
   const updatedChildren = useMemo(() => {
     return React.Children.toArray(children).map(item => {
       if (React.isValidElement(item)) {
-        return React.cloneElement(item, { ...props })
+        return React.cloneElement(item, { ...props, ...item.props })
       }
 
       return item

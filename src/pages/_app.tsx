@@ -6,6 +6,7 @@ import { NextWebVitalsMetric } from 'next/app'
 import { Page } from '@src/utils/libs/nextjs'
 import { GlobalStyles } from '@src/utils/styles/Global'
 import Head from 'next/head'
+import { AuthProvider, FirebaseProvider, GlobalProvider } from '@src/contextes'
 
 class App extends AppType<AppContext & WithUserAgentProps & {}, AppInitialProps> {
   static async getInitialProps(ctx: any) {
@@ -73,9 +74,15 @@ class App extends AppType<AppContext & WithUserAgentProps & {}, AppInitialProps>
           />
         </Head>
         <GlobalStyles />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <GlobalProvider>
+          <FirebaseProvider>
+            <AuthProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </AuthProvider>
+          </FirebaseProvider>
+        </GlobalProvider>
       </>
     )
   }

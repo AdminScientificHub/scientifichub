@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react'
-import { GlobalContext } from './context'
+import { GlobalContext, TGlobalContext } from './context'
 import { useGlobal } from './hook'
 import { FirestoreProvider } from '@react-firebase/firestore'
 import firebase from 'firebase/app'
@@ -26,6 +26,4 @@ export const GlobalProvider: FunctionComponent = ({ children }) => {
   )
 }
 
-export const useGlobalContext = () => {
-  return useContext(GlobalContext)
-}
+export const useGlobalContext = (): TGlobalContext => useContext(GlobalContext)

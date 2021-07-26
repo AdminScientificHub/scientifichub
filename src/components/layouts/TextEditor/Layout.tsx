@@ -21,13 +21,7 @@ import StarterKit from '@tiptap/starter-kit'
 
 import NoMobileIllustration from '@src/assets/illustrations/no-mobile.svg'
 
-import {
-  FirebaseProvider,
-  GlobalProvider,
-  TextEditorProvider,
-  useGlobalContext,
-  useTextEditorContext,
-} from '@src/contextes'
+import { TextEditorProvider, useGlobalContext, useTextEditorContext } from '@src/contextes'
 
 import { Content } from './Content'
 import { Footer } from './Footer'
@@ -128,13 +122,9 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
 }
 
 export const TextEditorLayout: FunctionComponent = ({ children, ...props }) => (
-  <GlobalProvider>
-    <FirebaseProvider>
-      <TextEditorProvider>
-        <TextEditorLayoutComponent {...props}>{children}</TextEditorLayoutComponent>
-      </TextEditorProvider>
-    </FirebaseProvider>
-  </GlobalProvider>
+  <TextEditorProvider>
+    <TextEditorLayoutComponent {...props}>{children}</TextEditorLayoutComponent>
+  </TextEditorProvider>
 )
 
 export type TTextEditorLayoutProps = TProps
