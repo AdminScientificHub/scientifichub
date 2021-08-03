@@ -21,6 +21,8 @@ export const StyledContainer = styled(Flex)(() => {
 
     p: {
       width: '100%',
+      whiteSpace: 'pre',
+      margin: '0 1rem',
     },
   }
 })

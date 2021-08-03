@@ -17,7 +17,7 @@ export const useGlobal = (): TGlobalContext => {
     setIsLiveMode(!!router.query.publicationId)
     setIsEditorPreview(router.pathname === '/publication/preview')
     setIsErrorPage(router.pathname === '/publication/error')
-  }, [router.pathname])
+  }, [router.pathname, router.query.publicationId])
 
   return {
     isMobile,

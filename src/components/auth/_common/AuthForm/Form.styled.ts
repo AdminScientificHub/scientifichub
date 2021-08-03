@@ -56,7 +56,7 @@ export const StyledForm = styled('form')(() => {
 
     '& > *': {
       '&:not(:last-child)': {
-        marginBottom: '1.2rem',
+        marginBottom: '2.4rem',
       },
     },
   }

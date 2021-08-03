@@ -1,8 +1,27 @@
 import { createContext } from 'react'
 
-type TContext = {}
+export type TUser = {
+  uid: string
+  photoURL: string
+  email: string
+  displayName: string
+  emailVerified: boolean
+}
 
-const initialValue: TContext = {}
+type TContext = {
+  user: TUser | null
+  isSignedIn: boolean
+  setUser: (user: TUser) => void
+}
+
+const initialValue: TContext = {
+  user: null,
+  isSignedIn: false,
+  setUser: () => {
+    {
+    }
+  },
+}
 
 export const AuthContext = createContext(initialValue)
 
