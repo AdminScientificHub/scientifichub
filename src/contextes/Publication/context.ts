@@ -25,7 +25,7 @@ export type TPublication = {
   createdAt: firebase.firestore.Timestamp
   publishedAt: firebase.firestore.Timestamp
   updatedAt: firebase.firestore.Timestamp
-  user: firebase.firestore.DocumentReference
+  user: string
   description: string
   coverUrl: string
 }

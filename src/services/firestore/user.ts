@@ -23,7 +23,7 @@ export const updateUser = ({
 export const createUser = ({
   user,
 }: {
-  user: Pick<Partial<TUser>, 'uid' | 'firstName' | 'lastName'>
+  user: Pick<Partial<TUser>, 'uid' | 'firstName' | 'lastName' | 'email'>
 }): void => {
   const db = firebase.firestore()
 

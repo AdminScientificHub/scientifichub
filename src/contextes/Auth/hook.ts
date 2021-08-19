@@ -49,6 +49,7 @@ export const useAuth = (): TAuthContext => {
               uid: auth.uid,
               firstName: auth.displayName ? auth.displayName.split(' ')[0] : '',
               lastName: auth.displayName ? auth.displayName.split(' ')[1] : '',
+              email: auth.email,
             },
           })
         }
