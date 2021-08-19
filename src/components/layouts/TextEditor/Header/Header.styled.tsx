@@ -13,6 +13,20 @@ export const StyledHeader = styled(Flex)(() => {
   }
 })
 
+export const StyledSaving = styled(Flex)(() => {
+  return {
+    padding: '.8rem',
+    height: '2.8rem',
+    alignSelf: 'center',
+
+    svg: {
+      fill: '#858CA8',
+      marginRight: '.4rem',
+      height: '1rem',
+    },
+  }
+})
+
 export const StyledNewDocumentBtn = styled('button')(() => {
   return {
     fontSize: '1.2rem',

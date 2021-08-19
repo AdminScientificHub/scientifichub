@@ -1,13 +1,19 @@
 import styled from '@emotion/styled'
+import { Flex } from '@src/components/core'
+import { rgba } from 'emotion-rgba'
 
-export const StyledContainer = styled('div')(() => {
+export const StyledSidebar = styled(Flex)<{ showSidebar: boolean }>(({ showSidebar }) => {
   return {
-    height: '100%',
-    scrollBehavior: 'smooth',
-    overflow: 'auto',
+    '& > *': {
+      transition: 'opacity .3s ease',
+      opacity: showSidebar ? 1 : 0,
+      transform: showSidebar ? 'translate(0)' : 'translate(999rem)',
 
-    '@media only screen and (max-width: 900px)': {
-      overflow: 'initial',
+      '&:not(:last-child)': {
+        paddingBottom: '2.4rem',
+        marginBottom: '2.4rem',
+        borderBottom: `.1rem solid ${rgba('#000', 0.1)}`,
+      },
     },
   }
 })

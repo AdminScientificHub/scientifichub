@@ -5,9 +5,10 @@ import { FONT_FAMILY } from '@src/utils/styles/tokens'
 
 export const StyledContainer = styled(Flex)(() => {
   return {
-    padding: '20% 6.4rem 0',
+    padding: '20% 0 0',
     height: '100%',
     overflow: 'auto',
+    scrollBehavior: 'smooth',
 
     '@media only screen and (max-width: 900px)': {
       padding: '4rem 6.4rem 0',

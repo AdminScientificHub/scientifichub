@@ -1,113 +1,242 @@
-import { useRouter } from 'next/dist/client/router'
-import React, { FunctionComponent, useState } from 'react'
-
-import { FirestoreMutation } from '@react-firebase/firestore'
-
-import LoadingIcon from '@src/assets/icons/loading.svg'
-import PublishIllustration from '@src/assets/illustrations/publish-publication.svg'
-import { Modal, TModalProps } from '@src/components/_common'
-import { ShareableLinks } from '@src/components/_common/TextEditor/Editor/ShareableLinks'
-import { Flex, Heading, Paragraph } from '@src/components/core'
-import { useTextEditorContext } from '@src/contextes'
-
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { AlertContent, Modal, TModalProps } from '@src/components/_common'
+import { Flex, Heading, Paragraph, Span } from '@src/components/core'
 import {
-  StyledCopiedToKeyboard,
-  StyledCopyKeyboardContainer,
-  StyledLoadingSpinner,
-  StyledPublishContainer,
-  StyledPublishedSuccessfull,
+  StyledColumn,
+  StyledContainer,
+  StyledCover,
+  StyledCoverContainer,
+  StyledRemoveCover,
 } from './Modal.styled'
+import { PublishModalCoverInput } from './CoverInput/Input'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { InlineInput } from './InlineInput'
+import { Input } from './Input'
+import { TSchema, schema } from './constant'
+import { usePublicationContext } from '@src/contextes'
+import CloseSvg from '@src/assets/icons/close.svg'
+import { ALL_AREAS_OF_EXPERTISE } from '@src/components/user/Onboarding/StepTwo/constant'
+import { publishPublication } from '@src/services'
+import LoadingIcon from '@src/assets/icons/loading.svg'
+
+import { useRouter } from 'next/dist/client/router'
+import { useAlert } from 'react-alert'
+import { StyledLoadingSpinner } from '@src/components/dashboard/_common/Table/Content/Content.styled'
 
 type TProps = {} & TModalProps
 
 export const PublishPublicationModal: FunctionComponent<TProps> = ({ closeModal, ...props }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [publicationId, setPublicationId] = useState('')
-  const [isCopiedToKeyboard, setIsCopiedToKeyboard] = useState(false)
+  const [isPublishing, setIsPublishing] = useState(false)
+  const { publication, publicationId } = usePublicationContext()
 
-  const { title, authors, editor } = useTextEditorContext()
   const router = useRouter()
+  const alert = useAlert()
 
-  const copyToKeyboard = () => {
-    navigator.clipboard.writeText(`app.scientifichub.io/publication/${publicationId}`).then(() => {
-      setIsCopiedToKeyboard(true)
+  const mainAuthor = useMemo(
+    () => publication?.authors.find(author => author.type === 'PRINCIPAL'),
+    [publication],
+  )
 
-      setTimeout(() => {
-        setIsCopiedToKeyboard(false)
-      }, 3000)
+  const {
+    control,
+    setValue,
+    watch,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm<TSchema>({
+    resolver: yupResolver(schema),
+    reValidateMode: 'onChange',
+    defaultValues: {
+      title: publication?.title,
+    },
+  })
+
+  const coverUrl = watch('coverUrl')
+
+  const deleteCover = () => setValue('coverUrl', '')
+
+  useEffect(() => {
+    setValue('title', publication?.title || '')
+  }, [publication, setValue])
+
+  const onSubmit = ({ tags, fields, ...data }: TSchema) => {
+    if (!publication?.title || !publication.content) {
+      alert.error(
+        <AlertContent
+          title="Document is invalid"
+          subtitle="Your document need at least a title and content"
+          type="error"
+        />,
+      )
+      return
+    }
+
+    setIsPublishing(true)
+
+    publishPublication({
+      publicationId,
+      publication: {
+        ...data,
+        tags: tags.map(tag => ({ value: tag.value, label: tag.label })),
+        fields: fields.map(field => ({ value: field.value, label: field.label })),
+      },
+      callback: () => {
+        setIsPublishing(false)
+        router.push(`/publication/${publicationId}`)
+      },
     })
   }
 
-  const goToPublication = () => {
-    router.push(`/publication/${publicationId}`)
-    closeModal()
-  }
-
   return (
-    <Modal closeModal={closeModal} {...props}>
-      {publicationId && !isLoading ? (
-        <StyledPublishedSuccessfull direction="column">
-          <Heading as="h2">Your publication has been posted 🎉</Heading>
-          <Paragraph color="text-light">
-            Very nice work! Your publication is now available with the link above, we have also
-            generated links for you to share on social medias. Let&apos;s bring science to the world
-            together.
-          </Paragraph>
-          <Heading as="h3">Click to copy it to your keyboard</Heading>
-          <Flex direction="row" align="center">
-            <StyledCopyKeyboardContainer onClick={copyToKeyboard}>
-              <input
-                disabled={true}
-                placeholder={`app.scientifichub.io/publication/${publicationId}`}
+    <Modal maxWidth="70%" closeModal={closeModal} {...props}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <StyledContainer direction="row">
+          <StyledColumn direction="column">
+            <Flex direction="column">
+              <Heading as="h3">Publication preview</Heading>
+              <Paragraph color="text-light" size="small">
+                Changes here will affect how your publication appear in public places like
+                ScientificHub homepage or in social media — not the publication itself.
+              </Paragraph>
+            </Flex>
+            {coverUrl ? (
+              <StyledCoverContainer>
+                <Paragraph>Image Cover</Paragraph>
+                <StyledCover src={coverUrl}>
+                  <StyledRemoveCover onClick={deleteCover}>
+                    <CloseSvg />
+                  </StyledRemoveCover>
+                </StyledCover>
+              </StyledCoverContainer>
+            ) : (
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                name="coverUrl"
+                render={({ field: { onChange } }) => (
+                  <PublishModalCoverInput
+                    error={errors.coverUrl}
+                    clearErrors={clearErrors}
+                    onChange={onChange}
+                  />
+                )}
               />
-            </StyledCopyKeyboardContainer>
+            )}
 
-            <StyledCopiedToKeyboard size="small" color="text-light" active={isCopiedToKeyboard}>
-              Copied !
-            </StyledCopiedToKeyboard>
-          </Flex>
-          <ShareableLinks place="right" />
-          <button onClick={goToPublication}>Go to the publication</button>
-        </StyledPublishedSuccessfull>
-      ) : (
-        <StyledPublishContainer direction="column">
-          <PublishIllustration />
-          <Heading as="h2">Are you ready to publish ?</Heading>
-          <Paragraph color="text-light">
-            Once you have posted your publication, we will give you a link to share with your
-            contacts. They will see the same thing you do when you preview your publication.
-          </Paragraph>
-          <Flex justify="end">
-            {isLoading ? (
-              <button>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="title"
+              render={({ field: { onChange, value } }) => (
+                <InlineInput
+                  onChange={onChange}
+                  value={value}
+                  label="Title"
+                  placeholder="Write a preview title"
+                  disabled
+                  error={errors.title}
+                  clearErrors={clearErrors}
+                  name="title"
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="description"
+              render={({ field: { onChange, value } }) => (
+                <InlineInput
+                  onChange={onChange}
+                  value={value}
+                  label="Description"
+                  placeholder="Write a preview description"
+                  error={errors.description}
+                  clearErrors={clearErrors}
+                  name="description"
+                />
+              )}
+            />
+          </StyledColumn>
+          <StyledColumn direction="column">
+            <Flex direction="column">
+              <Heading as="h3">Extra informations</Heading>
+              <Paragraph color="text-light" size="small">
+                Allow readers to know what your publication is about — fill these informations
+                carefully.
+              </Paragraph>
+            </Flex>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="tags"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  placeholder="E.g : General relativity"
+                  label="Tags"
+                  value={value}
+                  onChange={onChange}
+                  variant="creteable"
+                  error={errors.tags as any}
+                  clearErrors={clearErrors}
+                  name="tags"
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              name="fields"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  placeholder="E.g : Physics"
+                  label="Fields"
+                  value={value}
+                  variant="select"
+                  onChange={onChange}
+                  options={ALL_AREAS_OF_EXPERTISE.map(field => ({
+                    label: field.title,
+                    options: field.areas.map(area => ({ label: area, value: area })),
+                  }))}
+                  error={errors.fields as any}
+                  clearErrors={clearErrors}
+                  name="fields"
+                />
+              )}
+            />
+            <Paragraph color="text-light" size="small">
+              When your document is published, it will no longer be editable and it will be
+              available on the Community plateform.
+            </Paragraph>
+            <Paragraph color="text-light" size="small">
+              The main author will be :{' '}
+              <Span weight={700}>
+                {mainAuthor?.firstName} {mainAuthor?.lastName}
+              </Span>
+            </Paragraph>
+            <button onClick={handleSubmit(onSubmit)}>
+              {isPublishing ? (
                 <StyledLoadingSpinner>
                   <LoadingIcon />
                 </StyledLoadingSpinner>
-              </button>
-            ) : (
-              <FirestoreMutation type="add" path="/publications">
-                {({ runMutation }) => {
-                  return (
-                    <button
-                      onClick={() => {
-                        setIsLoading(true)
-                        runMutation({ title, content: editor?.getHTML(), authors }).then(data => {
-                          setTimeout(() => {
-                            setIsLoading(false)
-                          }, 1000)
-                          data.key && setPublicationId(data.key)
-                        })
-                      }}
-                    >
-                      Publish
-                    </button>
-                  )
-                }}
-              </FirestoreMutation>
-            )}
-          </Flex>
-        </StyledPublishContainer>
-      )}
+              ) : (
+                'Publish'
+              )}
+            </button>
+          </StyledColumn>
+        </StyledContainer>
+      </form>
     </Modal>
   )
 }

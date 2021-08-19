@@ -1,4 +1,5 @@
 export * from './NewDocumentModal'
+export * from './ProfileSettings'
 export * from './PublishPublicationModal'
 export * from './UploadFileModal'
 export * from './UploadImageModal'

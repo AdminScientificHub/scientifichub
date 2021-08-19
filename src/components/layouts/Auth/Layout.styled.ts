@@ -16,9 +16,13 @@ export const StyledBackgroundContainer = styled(Flex)(() => {
     height: '100%',
     backgroundImage: 'url("/images/auth-background.png")',
     backgroundSize: 'cover',
+  }
+})
 
-    svg: {
-      height: '100%',
-    },
+export const StyledImage = styled('img')(() => {
+  return {
+    minHeight: '20rem',
+    height: '60%',
+    maxHeight: '45rem',
   }
 })

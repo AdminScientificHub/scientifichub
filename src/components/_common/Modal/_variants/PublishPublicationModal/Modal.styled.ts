@@ -1,41 +1,19 @@
 import styled from '@emotion/styled'
 
-import { Flex, Paragraph } from '@src/components/core'
+import { Flex } from '@src/components/core'
 import { lightenDarkenColor } from '@src/utils/styles/lightenDarkenColor'
 
-export const StyledContainer = styled('div')(() => {
+export const StyledContainer = styled(Flex)(() => {
   return {
-    h2: {
-      marginBottom: '.8rem',
-    },
-    p: {
-      marginBottom: '1.6rem',
-    },
-    input: {
-      fontSize: '1.4rem',
-      lineHeight: '2rem',
-      borderRadius: '.4rem',
-      border: '1px solid #E5E5E5',
-      padding: '.6rem 1rem',
-      width: '80%',
-
-      '&::placeholder': {
-        color: '#CDCDCD',
+    '& > *': {
+      flex: 1,
+      '&:not(:last-child)': {
+        marginRight: '3.2rem',
       },
     },
-  }
-})
 
-export const StyledPublishContainer = styled(Flex)(() => {
-  return {
-    h2: {
-      marginBottom: '.8rem',
-    },
-    p: {
-      marginBottom: '3.2rem',
-    },
     button: {
-      padding: '.8rem 3.2rem',
+      padding: '.8rem 2.4rem',
       borderRadius: '.4rem',
       border: 'none',
       color: '#fff',
@@ -45,98 +23,73 @@ export const StyledPublishContainer = styled(Flex)(() => {
       lineHeight: '2rem',
       transition: 'all .2s ease',
       cursor: 'pointer',
+      alignSelf: 'flex-start',
 
       '&:hover': {
         backgroundColor: lightenDarkenColor('#3654D1', -20),
       },
-    },
 
-    svg: {
-      height: '10rem',
-      alignSelf: 'flex-start',
+      '& > *': {
+        margin: '0',
+
+        svg: {
+          fill: '#fff',
+        },
+      },
+    },
+  }
+})
+
+export const StyledColumn = styled(Flex)(() => {
+  return {
+    h3: {
+      marginBottom: '.8rem',
+    },
+    '& > *': {
       marginBottom: '2.4rem',
     },
   }
 })
 
-export const StyledLoadingSpinner = styled(Flex)(() => {
+export const StyledCoverContainer = styled('div')(() => {
   return {
-    '@keyframes rotating': {
-      from: {
-        transform: 'rotate(0deg)',
-      },
-      to: {
-        transform: 'rotate(360deg)',
-      },
+    p: {
+      marginBottom: '.8rem',
+      fontSize: '1.4rem',
+      lineHeight: '1',
+      fontWeight: 700,
     },
-    animation: 'rotating 2s linear infinite',
+  }
+})
+
+export const StyledCover = styled('div')<{ src: string }>(({ src }) => {
+  return {
+    position: 'relative',
+    background: `url(${src}) no-repeat`,
+    height: '12.5rem',
+    width: '100%',
+    borderRadius: '.8rem',
+  }
+})
+
+export const StyledRemoveCover = styled('div')(() => {
+  return {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    right: '0',
+    padding: '.8rem',
+    borderRadius: '50%',
+    boxShadow: '0 0.2rem 0.5rem rgb(0 0 0 / 10%)',
+    margin: '-1rem',
+    cursor: 'pointer',
+    transition: 'all .2s ease',
+
+    '&:hover': {
+      backgroundColor: '#f2f2f2',
+    },
 
     svg: {
-      margin: 0,
-      height: '2rem',
-      fill: '#fff',
+      height: '.8rem',
     },
-  }
-})
-
-export const StyledPublishedSuccessfull = styled(Flex)(() => {
-  return {
-    h2: {
-      marginBottom: '1.6rem',
-    },
-
-    input: {
-      fontSize: '1.4rem',
-      lineHeight: '2rem',
-      borderRadius: '.4rem',
-      border: '1px solid #E5E5E5',
-      padding: '.6rem 1rem',
-      width: '100%',
-      backgroundColor: '#fff',
-      marginRight: '1.6rem',
-
-      '&::placeholder': {
-        color: '#626262',
-      },
-    },
-    h3: {
-      marginBottom: '.8rem',
-      marginTop: '2.4rem',
-    },
-
-    a: {
-      marginTop: '1.6rem',
-    },
-
-    button: {
-      padding: '.8rem 3.2rem',
-      alignSelf: 'flex-end',
-      borderRadius: '.4rem',
-      border: 'none',
-      color: '#fff',
-      backgroundColor: '#3654D1',
-      fontSize: '1.6rem',
-      fontWeight: 700,
-      lineHeight: '2rem',
-      transition: 'all .2s ease',
-      cursor: 'pointer',
-
-      '&:hover': {
-        backgroundColor: lightenDarkenColor('#3654D1', -20),
-      },
-    },
-  }
-})
-
-export const StyledCopyKeyboardContainer = styled(Flex)(() => {
-  return {
-    flex: '0 0 80%',
-  }
-})
-
-export const StyledCopiedToKeyboard = styled(Paragraph)<{ active: boolean }>(({ active }) => {
-  return {
-    opacity: active ? 1 : 0,
-    transition: 'all .5s ease',
   }
 })

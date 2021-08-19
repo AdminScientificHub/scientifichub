@@ -1,24 +1,31 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { TextEditorLayout } from '@src/components/layouts/TextEditor/Layout'
+import { DashboardLayout } from '@src/components/layouts'
+import { useRouter } from 'next/dist/client/router'
 
 const Home = () => {
+  const router = useRouter()
+
+  // Redirect to Drafts on page load
+  useEffect(() => {
+    router.push('/publications/drafts')
+  }, [router])
+
   return (
     <>
       <Head>
-        <title>Write publication in a data privacy way | ScientificHub</title>
+        <title>Home | ScientificHub</title>
         <meta
           name="description"
           content="Discover and share knowledge with the best's scientific around the world"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <p>Hello World</p>
     </>
   )
 }
 
-Home.Layout = TextEditorLayout
+Home.Layout = DashboardLayout
 
 export default Home

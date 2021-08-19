@@ -10,7 +10,7 @@ type TProps = {}
 export const TextEditorTitle: FunctionComponent<TProps> = () => {
   const { title, editor, setTitle } = useTextEditorContext()
 
-  const { isPreviewMode } = useGlobalContext()
+  const { isPreviewMode, isLiveMode } = useGlobalContext()
 
   useEffect(() => {
     const titleInput = document.querySelector('#editor-title') as HTMLInputElement
@@ -28,7 +28,7 @@ export const TextEditorTitle: FunctionComponent<TProps> = () => {
 
   return (
     <StyledTitle
-      disabled={isPreviewMode}
+      disabled={isPreviewMode || isLiveMode}
       value={title}
       id="editor-title"
       placeholder="Publication title"

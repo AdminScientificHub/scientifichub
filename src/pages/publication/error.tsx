@@ -79,7 +79,7 @@ export const PublicationItemError = () => {
           , otherwise contact the person who sent you the link.
         </Paragraph>
 
-        <button onClick={() => router.push('/publication/new')}>Back to publication</button>
+        <button onClick={() => router.push('/')}>Back to my dashboard</button>
       </StyledContainer>
     </>
   )

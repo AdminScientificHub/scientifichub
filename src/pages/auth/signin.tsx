@@ -7,7 +7,7 @@ export const SigninPage = () => {
   return (
     <>
       <Head>
-        <title>First steps | ScientificHub</title>
+        <title>Sign In | ScientificHub</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SigninView />

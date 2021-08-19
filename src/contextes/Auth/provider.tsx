@@ -22,21 +22,21 @@ const FIREBASE_CONFIG = {
   databaseURL: '',
 }
 
-const AuthContainerHanlder: FunctionComponent<{ user: any; firebaseApp: any }> = ({
+const AuthContainerHanlder: FunctionComponent<{ auth: any; firebaseApp: any }> = ({
   children,
-  user: userLogged,
+  auth: userAuth,
   firebaseApp,
 }) => {
-  const { user, setUser } = useAuthContext()
+  const { updateAuth, auth } = useAuthContext()
   const { push, pathname } = useRouter()
 
   useEffect(() => {
-    setUser(userLogged)
-  }, [userLogged, setUser])
+    updateAuth(userAuth)
+  }, [userAuth, updateAuth])
 
   if (
-    !user &&
-    !userLogged &&
+    !auth &&
+    !userAuth &&
     !['/auth/signin', '/auth/signup'].includes(pathname) &&
     !isEmpty(firebaseApp)
   ) {
@@ -46,7 +46,7 @@ const AuthContainerHanlder: FunctionComponent<{ user: any; firebaseApp: any }> =
   }
 
   if (
-    (user || userLogged) &&
+    (auth || userAuth) &&
     ['/auth/signin', '/auth/signup'].includes(pathname) &&
     !isEmpty(firebaseApp)
   ) {
@@ -62,19 +62,19 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
   const value = useAuth()
 
   return (
-    <FirebaseAuthProvider firebase={firebase} {...FIREBASE_CONFIG}>
-      <FirestoreProvider {...FIREBASE_CONFIG} firebase={firebase}>
+    <FirestoreProvider {...FIREBASE_CONFIG} firebase={firebase}>
+      <FirebaseAuthProvider firebase={firebase} {...FIREBASE_CONFIG}>
         <AuthContext.Provider value={value}>
           <FirebaseAuthConsumer>
-            {({ user, firebase: firebaseApp }) => (
-              <AuthContainerHanlder firebaseApp={firebaseApp} user={user}>
+            {({ user: auth, firebase: firebaseApp }) => (
+              <AuthContainerHanlder firebaseApp={firebaseApp} auth={auth}>
                 {children}
               </AuthContainerHanlder>
             )}
           </FirebaseAuthConsumer>
         </AuthContext.Provider>
-      </FirestoreProvider>
-    </FirebaseAuthProvider>
+      </FirebaseAuthProvider>
+    </FirestoreProvider>
   )
 }
 

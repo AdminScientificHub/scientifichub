@@ -1,51 +1,32 @@
-import { useRouter } from 'next/dist/client/router'
-import React, { FunctionComponent, useEffect } from 'react'
+import { useGlobalContext } from '@src/contextes'
 
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+import React, { FunctionComponent } from 'react'
+
+import { AuthorInfos } from './AuthorInfos'
 
 import { Editor } from './Editor'
-import { TAuthor } from './Editor/Authors'
+
 import { TableOfContent } from './TableOfContent'
-import { StyledContainer } from './TextEditor.styled'
+import { StyledSidebar } from './TextEditor.styled'
 
 type TProps = {
-  authors?: TAuthor[]
-  content?: string
-  title?: string
-  isLoading?: boolean
+  showSidebar: boolean
 }
 
-export const TextEditor: FunctionComponent<TProps> = ({
-  content,
-  title,
-  authors,
-  isLoading = true,
-}) => {
-  const { isLiveMode } = useGlobalContext()
-  const { setAuthors, setTitle, setContent } = useTextEditorContext()
-
-  const router = useRouter()
-
-  useEffect(() => {
-    if (isLiveMode && !isLoading && (!content || !title)) {
-      router.push('/publication/error')
-    }
-  }, [isLiveMode, isLoading, content, title, router])
-
-  useEffect(() => {
-    if (content && title && authors?.length) {
-      setContent(content)
-      setTitle(title)
-      setAuthors(authors)
-    }
-  }, [content, title, authors, setAuthors, setContent, setTitle])
+export const TextEditor: FunctionComponent<TProps> = ({ showSidebar }) => {
+  const { isPreviewMode, isLiveMode } = useGlobalContext()
 
   return (
     <>
-      <StyledContainer>
+      <div>
         <Editor />
-      </StyledContainer>
-      <TableOfContent />
+      </div>
+      {(isPreviewMode || isLiveMode) && (
+        <StyledSidebar direction="column" showSidebar={showSidebar}>
+          <AuthorInfos />
+          <TableOfContent />
+        </StyledSidebar>
+      )}
     </>
   )
 }

@@ -15,6 +15,7 @@ const options: AlertProviderProps = {
     margin: '3rem',
     width: 'calc(100% - 6rem)',
     pointerEvents: 'all',
+    zIndex: 12,
   },
 }
 

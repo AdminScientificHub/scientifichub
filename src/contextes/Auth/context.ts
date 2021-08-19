@@ -1,23 +1,32 @@
 import { createContext } from 'react'
+import { TPublication } from '../Publication/context'
+
+export type TAuth = any
 
 export type TUser = {
+  id: string
   uid: string
-  photoURL: string
+  firstName: string
+  title: string
+  lastName: string
   email: string
-  displayName: string
-  emailVerified: boolean
+  fieldOfStudies: { label: string; value: string }[]
+  isOnboardingFinished: boolean
+  publications: TPublication[]
 }
 
 type TContext = {
   user: TUser | null
+  auth: TAuth | null
   isSignedIn: boolean
-  setUser: (user: TUser) => void
+  updateAuth: (auth: TAuth) => void
 }
 
 const initialValue: TContext = {
+  auth: null,
   user: null,
   isSignedIn: false,
-  setUser: () => {
+  updateAuth: () => {
     {
     }
   },

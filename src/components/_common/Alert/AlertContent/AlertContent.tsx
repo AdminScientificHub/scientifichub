@@ -10,7 +10,6 @@ type TProps = {
 }
 
 export const AlertContent: FunctionComponent<TProps> = ({ title, subtitle, type }) => {
-  console.log('type', type)
   return (
     <Flex direction="column">
       <StyledTitle type={type}>{title}</StyledTitle>

@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback, useEffect, useState } from 'reac
 
 import SummaryIllustration from '@src/assets/illustrations/summary.svg'
 import { Heading, Link, Paragraph } from '@src/components/core'
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+import { useGlobalContext, usePublicationContext, useTextEditorContext } from '@src/contextes'
 
 import { UploadFileModal } from '../..'
 import {
@@ -25,6 +25,7 @@ export const TableOfContent: FunctionComponent = () => {
 
   const { editor } = useTextEditorContext()
   const { isMobile, isPreviewMode } = useGlobalContext()
+  const { publicationId } = usePublicationContext()
 
   const handleUpdate = useCallback(() => {
     if (!editor) {
@@ -92,18 +93,27 @@ export const TableOfContent: FunctionComponent = () => {
     }
   }, [editor, handleUpdate])
 
-  if ((isPreviewMode && !allHeadings.length) || isMobile) {
+  if ((isPreviewMode && !allHeadings.length) || isMobile || !allHeadings.length) {
     return <></>
   }
 
   return (
     <StyledContainer direction="column" justify={isMobile ? 'start' : 'center'} position="relative">
-      <UploadFileModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+      <UploadFileModal
+        isModalOpen={isModalOpen}
+        closeModal={() => setIsModalOpen(false)}
+        publicationId={publicationId}
+      />
       {isMobile && !!allHeadings.length && <Heading as="h2">Summary</Heading>}
       {allHeadings.length ? (
         <StyledListContainer>
           {allHeadings.map(heading => (
-            <StyledItem href={`#${heading.id}`} data-position={heading.position} key={heading.id}>
+            <StyledItem
+              title={heading.text}
+              href={`#${heading.id}`}
+              data-position={heading.position}
+              key={heading.id}
+            >
               {heading.text || 'Untitled'}
             </StyledItem>
           ))}

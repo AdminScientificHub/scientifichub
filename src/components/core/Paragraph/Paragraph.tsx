@@ -3,6 +3,7 @@ import React, { FunctionComponent, useMemo } from 'react'
 import { StyledContainer, TParagraphStyles } from './Paragraph.styled'
 
 type TProps = {
+  title?: string
   onClick?: (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => void
 } & TParagraphStyles
 

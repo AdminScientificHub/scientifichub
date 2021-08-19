@@ -10,6 +10,7 @@ export const StyledContainer = styled(Flex)(() => {
     height: '5.2rem',
     padding: '.4rem',
     marginBottom: '1.2rem',
+    boxShadow: '0 0.2rem 0.5rem rgb(0 0 0 / 10%)',
   }
 })
 

@@ -8,13 +8,13 @@ export const RedirectToPublication = () => {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('/publication/new')
+    router.push('/publications')
   }, [router])
 
   return (
     <>
       <Head>
-        <title>ScientificHub - Write publication in a data privacy way.</title>
+        <title>Publication | ScientificHub</title>
         <meta
           name="description"
           content="Discover and share knowledge with the best's scientific around the world"
