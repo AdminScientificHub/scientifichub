@@ -28,6 +28,10 @@ export const GlobalStyles: FunctionComponent<TProps> = () => {
           padding: 0.4rem 0.8rem;
           border-radius: 0.4rem;
         }
+
+        body {
+          overflow: hidden;
+        }
       `}
     />
   )

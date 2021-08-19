@@ -7,16 +7,22 @@ type TProps = {
   color?: TTokenColor
   textAlign?: 'center' | 'right' | 'left'
   weight?: 500 | 700
+  ellipsis?: boolean
 }
 
 export const StyledContainer = styled('p')<TProps>(
-  ({ size = 'regular', color = 'default', textAlign, weight }) => {
+  ({ size = 'regular', color = 'default', textAlign, weight, ellipsis = false }) => {
     return {
       textAlign,
       ...SIZE[size],
       fontWeight: weight,
       fontFamily: FONT_FAMILY,
       color: COLOR[color],
+      ...(ellipsis && {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }),
     }
   },
 )

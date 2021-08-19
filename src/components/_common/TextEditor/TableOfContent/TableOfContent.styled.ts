@@ -7,17 +7,6 @@ import { FONT_FAMILY } from '@src/utils/styles/tokens'
 
 export const StyledContainer = styled(Flex)(() => {
   return {
-    '& > *': {
-      minHeight: '60%',
-      maxHeight: '80%',
-      padding: '0 6.4rem',
-
-      '@media only screen and (max-width: 900px)': {
-        minHeight: 'initial',
-        maxHeight: 'initial',
-      },
-    },
-
     '@media only screen and (max-width: 900px)': {
       margin: '0 6.4rem',
       padding: '4rem 0',
@@ -43,6 +32,7 @@ export const StyledContainer = styled(Flex)(() => {
 export const StyledListContainer = styled(NodeViewWrapper)(() => {
   return {
     overflow: 'auto',
+    scrollBehavior: 'smooth',
   }
 })
 

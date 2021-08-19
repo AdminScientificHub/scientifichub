@@ -6,13 +6,15 @@ type TProps = {
   size?: TTokenSize
   color?: TTokenColor
   textDecoration?: 'underline' | 'none'
+  weight?: 500 | 700
 }
 
 export const StyledContainer = styled('span')<TProps>(
-  ({ size = 'regular', color = 'default', textDecoration = 'none' }) => {
+  ({ size = 'regular', color = 'default', textDecoration = 'none', weight }) => {
     return {
       textDecoration,
       ...SIZE[size],
+      fontWeight: weight,
       fontFamily: FONT_FAMILY,
       color: COLOR[color],
     }

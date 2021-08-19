@@ -1,4 +1,4 @@
-export type TTokenSize = 'regular' | 'small' | 'xsmall' | 'large'
+export type TTokenSize = 'regular' | 'small' | 'xsmall' | 'large' | 'xxsmall'
 
 export const SIZE: {
   [keyof in NonNullable<TTokenSize>]: { fontSize: string; lineHeight: string }
@@ -19,14 +19,19 @@ export const SIZE: {
     fontSize: '1.2rem',
     lineHeight: '1.6rem',
   },
+  xxsmall: {
+    fontSize: '.9rem',
+    lineHeight: '1.6rem',
+  },
 }
 
-export type TTokenColor = 'default' | 'text-light' | 'text-lighter' | 'error'
+export type TTokenColor = 'default' | 'text-light' | 'text-lighter' | 'error' | 'text-white'
 
 export const COLOR: { [keyof in NonNullable<TTokenColor>]: string } = {
   default: '#000',
   'text-light': '#858CA8',
   'text-lighter': '#ced4da',
+  'text-white': '#fff',
   error: '#F14336',
 }
 

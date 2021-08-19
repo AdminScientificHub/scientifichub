@@ -13,11 +13,11 @@ export const useGlobal = (): TGlobalContext => {
   const router = useRouter()
 
   useEffect(() => {
-    setIsPreviewMode(router.pathname === '/publication/preview' || !!router.query.publicationId)
-    setIsLiveMode(!!router.query.publicationId)
-    setIsEditorPreview(router.pathname === '/publication/preview')
+    setIsPreviewMode(router.pathname === '/publication/[publicationId]/preview')
+    setIsLiveMode(router.pathname === '/publication/[publicationId]')
+    setIsEditorPreview(router.pathname === '/publication/[publicationId]/preview')
     setIsErrorPage(router.pathname === '/publication/error')
-  }, [router.pathname])
+  }, [router.pathname, router.query.publicationId])
 
   return {
     isMobile,

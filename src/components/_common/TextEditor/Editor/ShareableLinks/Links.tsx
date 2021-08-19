@@ -1,11 +1,10 @@
-import { useRouter } from 'next/dist/client/router'
 import React, { FunctionComponent, useMemo } from 'react'
 import ReactTooltip from 'react-tooltip'
 
 import FacebookIcon from '@src/assets/icons/facebook.svg'
 import LinkedinIcon from '@src/assets/icons/linkedin.svg'
 import TwitterIcon from '@src/assets/icons/twitter.svg'
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+import { useGlobalContext, usePublicationContext } from '@src/contextes'
 
 import { StyledContainer } from './Links.styled'
 
@@ -15,39 +14,28 @@ type TProps = {
 
 export const ShareableLinks: FunctionComponent<TProps> = ({ place = 'bottom' }) => {
   const { isLiveMode } = useGlobalContext()
-  const { title, editor } = useTextEditorContext()
 
-  const { query } = useRouter()
-
-  const publicationId = useMemo(() => {
-    return query.publicationId
-  }, [query.publicationId])
+  const { publication, publicationId } = usePublicationContext()
 
   const twitterLink = useMemo(() => {
     return `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      `${title} ${`https://app.scientifichub.io/publication/${publicationId}`}`,
+      `${publication?.title} ${`https://app.scientifichub.io/publication/${publicationId}`}`,
     )}`
-  }, [title, publicationId])
+  }, [publication?.title, publicationId])
 
   const linkedinLink = useMemo(() => {
-    const value = editor?.getJSON() as any
-
-    if (!value) return ''
-
-    const firstParagraph = value.content.find(({ type }: any) => type === 'paragraph')
-
     return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
       `https://app.scientifichub.io/publication/${publicationId}`,
-    )}&title=${encodeURIComponent(title)}${
-      firstParagraph.content ? `&summary=${firstParagraph.content[0].text}` : ''
+    )}&title=${encodeURIComponent(publication?.title || '')}&summary=${
+      publication?.description
     }&source=LinkedIn`
-  }, [publicationId, title, editor])
+  }, [publicationId, publication?.title, publication?.description])
 
   const facebookLink = useMemo(() => {
     return `https://www.facebook.com/sharer.php?t=${encodeURIComponent(
-      title,
+      publication?.title || '',
     )}&u=${encodeURIComponent(`https://app.scientifichub.io/publication/${publicationId}`)}`
-  }, [publicationId, title])
+  }, [publication?.title, publicationId])
 
   return (
     <StyledContainer direction="row" areLinksActive={isLiveMode}>

@@ -1,29 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
 
-import BulletListExtension from '@tiptap/extension-bullet-list'
-import FloatingMenuExtension from '@tiptap/extension-floating-menu'
-import HeadingExtension from '@tiptap/extension-heading'
-import ImageExtension from '@tiptap/extension-image'
-import LinkExtension from '@tiptap/extension-link'
-import ListItemExtension from '@tiptap/extension-list-item'
-import OrderedListExtension from '@tiptap/extension-ordered-list'
-import PlaceholderExtension from '@tiptap/extension-placeholder'
-import UnderlineExtension from '@tiptap/extension-underline'
-import {
-  Indent as IndentExtension,
-  MathBlock as MathBlockExtension,
-  MathInline as MathInlineExtension,
-  MathInlineMark as MathInlineMarkExtension,
-} from '@src/components/_common/TextEditor/_extensions'
-
 import { useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
 
 import NoMobileIllustration from '@src/assets/illustrations/no-mobile.svg'
 
 import {
-  FirebaseProvider,
-  GlobalProvider,
+  PublicationProvider,
   TextEditorProvider,
   useGlobalContext,
   useTextEditorContext,
@@ -34,10 +16,11 @@ import { Footer } from './Footer'
 import { Header } from './Header'
 import { StyledContainer, StyledNoMobileContainer } from './Layout.styled'
 import { Heading, Link, Paragraph } from '@src/components/core'
+import { EXTENSIONS } from './Layout.utils'
 
 type TProps = {}
 
-export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children }) => {
+const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children }) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -45,64 +28,30 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
   }, [])
 
   const { editor, setEditor } = useTextEditorContext()
-  const { isPreviewMode, isMobile } = useGlobalContext()
-
-  useEffect(() => {
-    if (editor) {
-      editor?.setEditable(!isPreviewMode)
-    }
-  }, [editor, isPreviewMode])
-
-  const editorContext = useEditor({
-    extensions: [
-      MathBlockExtension,
-      StarterKit,
-      PlaceholderExtension.configure({
-        placeholder: 'Write or paste (⌘+V) your text here',
-      }),
-      LinkExtension.configure({
-        HTMLAttributes: {
-          target: '_blank',
-        },
-      }),
-      IndentExtension,
-      UnderlineExtension,
-      FloatingMenuExtension,
-      OrderedListExtension,
-      BulletListExtension,
-      ListItemExtension,
-      MathInlineExtension,
-      ImageExtension,
-      MathInlineMarkExtension,
-      HeadingExtension.extend({
-        addGlobalAttributes() {
-          return [
-            {
-              types: ['heading'],
-              attributes: {
-                id: {
-                  default: null,
-                },
-              },
-            },
-          ]
-        },
-      }),
-    ],
-  })
+  const { isPreviewMode, isMobile, isLiveMode } = useGlobalContext()
 
   const backToHome = () => {
     window.location.href = 'https://www.scientifichub.io/'
   }
 
   useEffect(() => {
+    if (editor) {
+      editor?.setEditable(!isPreviewMode && !isLiveMode)
+    }
+  }, [editor, isPreviewMode, isLiveMode])
+
+  const editorContext = useEditor({
+    extensions: EXTENSIONS,
+  })
+
+  useEffect(() => {
     setEditor(editorContext)
   }, [editorContext, setEditor])
 
   return (
-    <StyledContainer isPreviewMode={isPreviewMode}>
+    <StyledContainer isPreviewMode={isPreviewMode || isLiveMode}>
       <Header />
-      {isMobile && !isPreviewMode ? (
+      {isMobile && !isPreviewMode && !isLiveMode ? (
         <StyledNoMobileContainer direction="column" align="center" justify="center">
           <NoMobileIllustration />
           <Heading textAlign="center" as="h1">
@@ -128,13 +77,11 @@ export const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children 
 }
 
 export const TextEditorLayout: FunctionComponent = ({ children, ...props }) => (
-  <GlobalProvider>
-    <FirebaseProvider>
-      <TextEditorProvider>
-        <TextEditorLayoutComponent {...props}>{children}</TextEditorLayoutComponent>
-      </TextEditorProvider>
-    </FirebaseProvider>
-  </GlobalProvider>
+  <PublicationProvider>
+    <TextEditorProvider>
+      <TextEditorLayoutComponent {...props}>{children}</TextEditorLayoutComponent>
+    </TextEditorProvider>
+  </PublicationProvider>
 )
 
 export type TTextEditorLayoutProps = TProps

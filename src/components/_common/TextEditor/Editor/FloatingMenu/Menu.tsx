@@ -25,22 +25,26 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
   const { editor } = useTextEditorContext()
-  const { isPreviewMode } = useGlobalContext()
+  const { isPreviewMode, isLiveMode } = useGlobalContext()
 
   useEffect(() => {
+    if (editor?.isDestroyed) {
+      return
+    }
+
     editor?.on('transaction', () => {
       setIsFloatingMenuOpen(false)
     })
   }, [editor])
 
-  if (!editor) {
-    return <></>
-  }
-
   const handleImageFromMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
     setIsImageModalOpen(true)
     setIsFloatingMenuOpen(false)
+  }
+
+  if (!editor) {
+    return <></>
   }
 
   return (
@@ -49,8 +53,14 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
         offset: [0, -50],
         maxWidth: 'initial',
         zIndex: 10,
+
         onBeforeUpdate: props => {
           const { from, to } = editor.state.selection
+
+          if (isPreviewMode || isLiveMode) {
+            props.disable()
+            return
+          }
 
           editor.state.doc.nodesBetween(from, to, node => {
             if (node.type.name === 'mathBlock') {
@@ -67,7 +77,7 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
         closeModal={() => setIsImageModalOpen(false)}
         isModalOpen={isImageModalOpen}
       />
-      {!isPreviewMode && !isImageModalOpen && (
+      {!isImageModalOpen && (
         <StyledFloatingMenu direction="row">
           <StyledFloatingMenuItem
             align="center"

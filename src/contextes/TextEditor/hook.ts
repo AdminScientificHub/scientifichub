@@ -1,141 +1,134 @@
-import { TAuthor } from '@src/components/_common/TextEditor/Editor/Authors'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Editor } from '@tiptap/react'
+import firebase from 'firebase/app'
 
-import { useRouter } from 'next/dist/client/router'
-
-import { useEffect, useState } from 'react'
-import { useGlobalContext } from '../Global'
 import { TTextEditorContext } from './context'
+import { usePublicationContext } from '../Publication'
+import { useDebounceBoolean, useDebounceString } from '@src/utils/hooks/useDebounce'
+import { useRouter } from 'next/dist/client/router'
+import { updatePublication } from '@src/services'
 
 export const useTextEditor = (): TTextEditorContext => {
   const [editor, setEditor] = useState<Editor | null>(null)
+  const [editorPublicationId, setEditorPublicationId] = useState('')
+
   const [title, setTitle] = useState<string>('')
-  const [authors, setAuthors] = useState<TAuthor[]>([])
-  const [isNewDocumentModalOpen, setIsNewDocumentModalOpen] = useState(false)
+  const [debouncedTitle, isTitleDebouncing, isTitleFistDeboucing] = useDebounceString(title, 300)
 
-  const { pathname, push } = useRouter()
-  const { isPreviewMode, isLiveMode } = useGlobalContext()
+  const [content, setContent] = useState<string>('')
+  const [debouncedContent, isContentDebouncing, isContentFistDeboucing] = useDebounceString(
+    content,
+    300,
+  )
 
-  // First visit logic
-  useEffect(() => {
-    if (pathname === '/publication/new') {
-      const localData = localStorage.getItem('editor')
+  const [isSaving, setIsSaving] = useState(false)
+  const [isSavingDebounced] = useDebounceBoolean(
+    (isTitleDebouncing && !isTitleFistDeboucing) ||
+      (isContentDebouncing && !isContentFistDeboucing) ||
+      isSaving,
+  )
 
-      if (localData) {
-        return
-      }
+  const db = useMemo(() => firebase.firestore(), [])
+  const router = useRouter()
 
-      setIsNewDocumentModalOpen(true)
-    }
-  }, [pathname])
-
-  // Redirect to new publication when no localStorage
-  useEffect(() => {
-    const isPreviewPage = pathname === '/publication/preview'
-    const localData = localStorage.getItem('editor')
-    const parsedData = localData && JSON.parse(localData)
-
-    if (isPreviewPage && (!title || !parsedData.content.length) && editor) {
-      push('/publication/new')
-    }
-  }, [pathname, isPreviewMode, title, editor, push])
-
-  // Update cache on update
-  useEffect(() => {
-    if (!editor || isLiveMode) {
-      return
-    }
-
-    const localData = localStorage.getItem('editor')
-
-    editor?.on('update', () => {
-      const parsedLocalData = localData && JSON.parse(localData)
-
-      localStorage.setItem(
-        'editor',
-        JSON.stringify({
-          ...editor.getJSON(),
-          ...(parsedLocalData && {
-            title: parsedLocalData.title,
-            authors: parsedLocalData.authors,
-          }),
-        }),
-      )
-    })
-
-    if (localData && !editor.isDestroyed) {
-      const localDataParsed = JSON.parse(localData)
-
-      editor?.chain().setContent(localDataParsed, true).run()
-    }
-  }, [editor, isLiveMode])
+  const { publication, publicationId } = usePublicationContext()
 
   useEffect(() => {
-    const localData = localStorage.getItem('editor')
-
-    if (isLiveMode || !localData) {
-      return
+    if (
+      router.pathname === '/publication/[publicationId]/edit' &&
+      publication?.status === 'PUBLISHED'
+    ) {
+      router.push(`/publication/${publication.id}`)
     }
+  }, [publication?.id, publication?.status, router])
 
-    const parsedData = JSON.parse(localData)
-
-    parsedData.title && setTitle(parsedData.title)
-    parsedData.authors && setAuthors(parsedData.authors)
-  }, [isLiveMode])
-
-  const handleTitleChange = (newTitle: string) => {
-    const localData = localStorage.getItem('editor')
-
-    setTitle(newTitle)
-
-    if (isLiveMode) {
-      return
+  useEffect(() => {
+    if (publication && editorPublicationId !== publication.id) {
+      setTitle(publication.title)
+      setContent(publication.content)
+      setEditorPublicationId(publicationId)
+      editor?.chain().focus().setContent(publication.content, true).run()
     }
+  }, [editor, publicationId, editorPublicationId, publication])
 
-    if (localData) {
-      localStorage.setItem(
-        'editor',
-        JSON.stringify({ ...(localData && JSON.parse(localData)), title: newTitle }),
-      )
-    } else {
-      localStorage.setItem('editor', JSON.stringify({ title: newTitle }))
+  useEffect(() => {
+    if (
+      publication &&
+      debouncedTitle !== publication?.title &&
+      !isTitleDebouncing &&
+      !isTitleFistDeboucing &&
+      publicationId === editorPublicationId
+    ) {
+      setIsSaving(true)
+
+      updatePublication({
+        publicationId,
+        publication: {
+          title: debouncedTitle,
+        },
+        callback: () => {
+          setIsSaving(false)
+        },
+      })
     }
-  }
+  }, [
+    db,
+    debouncedTitle,
+    publicationId,
+    title,
+    publication,
+    isTitleDebouncing,
+    isTitleFistDeboucing,
+    editorPublicationId,
+  ])
 
-  const setContent = (content: string) => {
-    !editor?.isDestroyed && editor?.chain().setContent(content, true).focus().run()
+  const onContentChange = useCallback(() => {
+    setContent(editor?.getHTML() || '')
+  }, [editor])
 
-    localStorage.setItem('editor', JSON.stringify(editor?.getJSON()))
-  }
+  useEffect(() => {
+    editor?.on('update', onContentChange)
 
-  const handleAuthorsChange = (newAuthors: TAuthor[]) => {
-    const localData = localStorage.getItem('editor')
-
-    setAuthors(newAuthors)
-
-    if (isLiveMode) {
-      return
+    return () => {
+      editor?.off('update', onContentChange)
     }
+  }, [editor, onContentChange])
 
-    if (localData) {
-      localStorage.setItem(
-        'editor',
-        JSON.stringify({ ...(localData && JSON.parse(localData)), authors: newAuthors }),
-      )
-    } else {
-      localStorage.setItem('editor', JSON.stringify({ authors: newAuthors }))
+  useEffect(() => {
+    if (
+      publication &&
+      debouncedContent !== publication.content &&
+      !isContentDebouncing &&
+      !isContentFistDeboucing &&
+      publicationId === editorPublicationId
+    ) {
+      setIsSaving(true)
+
+      updatePublication({
+        publicationId,
+        publication: {
+          content: debouncedContent,
+        },
+        callback: () => {
+          setIsSaving(false)
+        },
+      })
     }
-  }
+  }, [
+    db,
+    debouncedContent,
+    editorPublicationId,
+    isContentDebouncing,
+    isContentFistDeboucing,
+    publication,
+    publicationId,
+  ])
 
   return {
-    authors,
     title,
     editor,
-    isNewDocumentModalOpen,
+    isSaving: isSavingDebounced,
     setEditor,
-    setContent,
-    setTitle: handleTitleChange,
-    setAuthors: handleAuthorsChange,
-    setIsNewDocumentModalOpen,
+    setTitle,
   }
 }

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react'
-import { TextEditorContext } from './context'
+import { TextEditorContext, TTextEditorContext } from './context'
 import { useTextEditor } from './hook'
 
 export const TextEditorProvider: FunctionComponent = ({ children }) => {
@@ -8,6 +8,6 @@ export const TextEditorProvider: FunctionComponent = ({ children }) => {
   return <TextEditorContext.Provider value={value}>{children}</TextEditorContext.Provider>
 }
 
-export const useTextEditorContext = () => {
+export const useTextEditorContext = (): TTextEditorContext => {
   return useContext(TextEditorContext)
 }

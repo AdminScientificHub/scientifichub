@@ -8,10 +8,6 @@ export const Span: FunctionComponent<TProps> = ({ children, ...props }) => {
   return <StyledContainer {...props}>{children}</StyledContainer>
 }
 
-Span.defaultProps = {
-  color: 'default',
-  size: 'regular',
-  textDecoration: 'none',
-}
+Span.defaultProps = {}
 
 export type TSpanProps = TProps

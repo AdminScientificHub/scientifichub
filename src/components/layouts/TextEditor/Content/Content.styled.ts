@@ -2,41 +2,28 @@ import styled from '@emotion/styled'
 
 export const StyledContainer = styled('div')(() => {
   return {
-    gridRow: '2/2',
-    display: 'grid',
-    gridTemplateColumns: '66% 1fr',
     height: '100%',
+    position: 'relative',
     overflow: 'auto',
+    scrollBehavior: 'smooth',
 
     '& > *': {
-      '&:not(:first-child)': {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-
-        '&:after': {
-          content: '""',
-          height: '60%',
-          position: 'absolute',
-          left: '0',
-          width: '0.1rem',
-          backgroundColor: '#E5E5E5',
-          top: '50%',
-          transform: 'translateY(-50%)',
-        },
+      '&:first-child': {
+        maxWidth: '68rem',
+        margin: '0 auto',
       },
-    },
 
-    '@media only screen and (max-width: 900px)': {
-      gridTemplateColumns: '1fr',
-      display: 'flex',
-      flexDirection: 'column-reverse',
-      scrollBehavior: 'smooth',
-      '& > *': {
-        '&:not(:first-child)': {
-          '&:after': {
-            content: 'none',
-          },
+      '&:not(:first-child)': {
+        position: 'fixed',
+        right: '0',
+        top: '20%',
+        maxWidth: '25rem',
+        minWidth: '25rem',
+        left: 'calc(50% + 68rem / 2 + 25rem / 2 + 2rem)',
+        transform: 'translateX(-50%)',
+
+        '@media only screen and (max-width: 1240px)': {
+          display: 'none',
         },
       },
     },

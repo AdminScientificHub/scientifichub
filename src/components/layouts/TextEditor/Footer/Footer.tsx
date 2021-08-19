@@ -9,10 +9,10 @@ import { FooterToolbar } from './Toolbar'
 type TProps = {}
 
 export const Footer: FunctionComponent<TProps> = () => {
-  const { isPreviewMode, isMobile } = useGlobalContext()
+  const { isPreviewMode, isMobile, isLiveMode } = useGlobalContext()
   const { editor } = useTextEditorContext()
 
-  if (isPreviewMode || !editor) {
+  if (isPreviewMode || isLiveMode || !editor) {
     return <></>
   }
 

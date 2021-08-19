@@ -1,100 +1,78 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent } from 'react'
 
 import EmptyDocIcon from '@src/assets/icons/document.svg'
 import TemplateIcon from '@src/assets/icons/template.svg'
 import ExempleTemplateIcon from '@src/assets/icons/exemple-document.svg'
 import { Modal, TModalProps } from '@src/components/_common'
 import { Heading, Paragraph, Span } from '@src/components/core'
-import { useTextEditorContext } from '@src/contextes'
+import { useAuthContext } from '@src/contextes'
 
 import { EXEMPLE_TEMPLATE, PAPER_TEMPLATE } from './constant'
 import { StyledChooseContainer, StyledChooseItem, StyledContainer } from './Modal.styled'
-import { useEffect } from 'react'
+import { useRouter } from 'next/dist/client/router'
+import { createPublication } from '@src/services'
 
 type TProps = {} & TModalProps
 
 export const NewDocumentModal: FunctionComponent<TProps> = ({ closeModal, ...props }) => {
-  const [isFirstVisit, setIsFirstVisit] = useState(false)
-
-  const { setContent, editor, setTitle, setAuthors, title, authors } = useTextEditorContext()
+  const { user } = useAuthContext()
+  const router = useRouter()
 
   const createPaperPublicationTemplate = () => {
-    if (authors.length || title || !editor?.isEmpty) {
-      const confirm = window.confirm(
-        'Your publication is not empty, on creating a new document you will permanently delete the old one, are you sure ?',
-      )
-
-      if (!confirm) {
-        return
-      }
-    }
-
-    setContent(PAPER_TEMPLATE)
-    setTitle('ON THE ELECTRODYNAMICS OF MOVING BODIES')
-    setAuthors([])
-
-    closeModal()
-  }
-
-  const createExemplePublicationTemplate = () => {
-    if (authors.length || title || !editor?.isEmpty) {
-      const confirm = window.confirm(
-        'Your publication is not empty, on creating a new document you will permanently delete the old one, are you sure ?',
-      )
-
-      if (!confirm) {
-        return
-      }
-    }
-
-    setContent(EXEMPLE_TEMPLATE)
-    setTitle('ON THE ELECTRODYNAMICS OF MOVING BODIES')
-    setAuthors([
-      {
-        name: 'Albert Einstein',
-        link: 'https://www.fourmilab.ch/etexts/einstein/specrel/specrel.pdf',
-      },
-    ])
-
-    closeModal()
-  }
-
-  const createEmptyPublication = () => {
-    if (authors.length || title || !editor?.isEmpty) {
-      const confirm = window.confirm(
-        'Your publication is not empty, on creating a new document you will permanently delete the old one, are you sure ?',
-      )
-
-      if (!confirm) {
-        return
-      }
-    }
-
-    editor?.chain().clearContent(true).focus().run()
-
-    setTitle('')
-    setAuthors([])
-
-    closeModal()
-  }
-
-  useEffect(() => {
-    const localStorageFirstVisit = localStorage.getItem('firstVisit')
-
-    if (localStorageFirstVisit) {
+    if (!user) {
       return
     }
 
-    setIsFirstVisit(true)
-    localStorage.setItem('firstVisit', 'true')
-  }, [])
+    createPublication({
+      title: 'ON THE ELECTRODYNAMICS OF MOVING BODIES',
+      authors: [{ type: 'PRINCIPAL', id: user.id }],
+      userUid: user.uid,
+      content: PAPER_TEMPLATE,
+      callback: ({ id }) => {
+        router.push(`/publication/${id}/edit`)
+        closeModal()
+      },
+    })
+  }
+
+  const createExemplePublicationTemplate = () => {
+    if (!user) {
+      return
+    }
+
+    createPublication({
+      title: 'ON THE ELECTRODYNAMICS OF MOVING BODIES',
+      authors: [{ type: 'PRINCIPAL', id: user.id }],
+      userUid: user.uid,
+      content: EXEMPLE_TEMPLATE,
+      callback: ({ id }) => {
+        router.push(`/publication/${id}/edit`)
+        closeModal()
+      },
+    })
+  }
+
+  const createEmptyPublication = () => {
+    if (!user) {
+      return
+    }
+
+    createPublication({
+      authors: [{ type: 'PRINCIPAL', id: user.id }],
+      userUid: user.uid,
+      callback: ({ id }) => {
+        return () => {
+          router.push(`/publication/${id}/edit`)
+          closeModal()
+        }
+      },
+    })
+  }
 
   return (
     <Modal closeModal={closeModal} {...props}>
       <StyledContainer direction="column">
-        <Heading as="h2">
-          {isFirstVisit ? 'Welcome to ScientificHub 👋' : 'Bring science to the world 🌍'}
-        </Heading>
+        <Heading as="h2">Bring science to the world 🌍</Heading>
         <Paragraph color="text-light">
           We are a platform allowing scientists around the world to create, edit and publish
           scientific content. We want to empower how research communication works and make{' '}

@@ -1,2 +1,6 @@
+export * from './Alert'
+export * from './DropDown'
 export * from './Modal'
+export * from './Separator'
 export * from './TextEditor'
+export * from './Thumbnail'

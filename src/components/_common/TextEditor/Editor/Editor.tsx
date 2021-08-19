@@ -4,17 +4,17 @@ import { EditorContent } from '@tiptap/react'
 
 import { useGlobalContext, useTextEditorContext } from '@src/contextes'
 
-import { TextEditorAuthors } from './Authors'
 import { StyledContainer, StyledEditor } from './Editor.styled'
 import { EditorFloatingMenu } from './FloatingMenu'
 import { ShareableLinks } from './ShareableLinks'
 import { TextEditorTitle } from './Title'
+import { EditorInfos } from './Infos'
 
 type TProps = {}
 
 export const Editor: FunctionComponent<TProps> = () => {
   const { editor } = useTextEditorContext()
-  const { isPreviewMode } = useGlobalContext()
+  const { isPreviewMode, isLiveMode } = useGlobalContext()
 
   const handleEditorFocus = () => {
     if (!editor) {
@@ -22,21 +22,18 @@ export const Editor: FunctionComponent<TProps> = () => {
     }
 
     const { doc } = editor.state
-
     const { lastChild } = editor.state.doc
-    const endPosition = doc.content.size
 
-    if (
-      lastChild?.type.name !== 'paragraph' ||
-      (lastChild.type.name === 'paragraph' && !!lastChild?.content.childCount)
-    ) {
-      {
-        editor
-          .chain()
-          .insertContentAt(endPosition, { type: 'paragraph' })
-          .focus(endPosition + 1)
-          .run()
-      }
+    const islastChildAParagraph = lastChild?.type.name === 'paragraph'
+
+    if (!islastChildAParagraph || (islastChildAParagraph && !!lastChild?.content.childCount)) {
+      const endPosition = doc.content.size
+
+      editor
+        .chain()
+        .insertContentAt(endPosition, { type: 'paragraph' })
+        .focus(endPosition + 1)
+        .run()
     } else {
       editor.commands.focus()
     }
@@ -44,9 +41,9 @@ export const Editor: FunctionComponent<TProps> = () => {
 
   return (
     <StyledContainer direction="column" onClick={handleEditorFocus}>
-      {isPreviewMode && <ShareableLinks />}
+      {(isPreviewMode || isLiveMode) && <ShareableLinks />}
       <TextEditorTitle />
-      <TextEditorAuthors />
+      <EditorInfos />
       <StyledEditor>
         {editor && <EditorContent editor={editor} />}
         <EditorFloatingMenu />

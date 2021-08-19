@@ -1,14 +1,14 @@
-import HTMLtoDOCX from 'html-to-docx'
-import { useRouter } from 'next/dist/client/router'
-import React, { FunctionComponent, useMemo, useState } from 'react'
-import ReactTooltip from 'react-tooltip'
+import React, { FunctionComponent } from 'react'
 import Link from 'next/link'
 
 import LogoBetaIcon from '@src/assets/icons/logo-beta.svg'
-
-import { NewDocumentModal, PublishPublicationModal, UploadFileModal } from '@src/components/_common'
-import { Flex, Span } from '@src/components/core'
-import { useGlobalContext, useTextEditorContext } from '@src/contextes'
+import { Flex, Paragraph, Span } from '@src/components/core'
+import {
+  useAuthContext,
+  useGlobalContext,
+  usePublicationContext,
+  useTextEditorContext,
+} from '@src/contextes'
 
 import {
   StyledActionsContainer,
@@ -16,129 +16,69 @@ import {
   StyledLogo,
   StyledNavigationItem,
   StyledNewDocumentBtn,
+  StyledSaving,
 } from './Header.styled'
+
+import CheckIcon from '@src/assets/icons/check.svg'
+import { NewAction } from './New'
+import { ExportAction } from './Export'
+import { ImportAction } from './Import'
+import { PreviewAction } from '../Preview'
+import { PublishAction } from './Publish'
+import { useRouter } from 'next/dist/client/router'
 
 type TProps = {}
 
 export const Header: FunctionComponent<TProps> = () => {
-  const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false)
-  const [isPublishingModalOpen, setIsPublishingModalOpen] = useState(false)
-  const [isNewDocModalOpen, setIsNewDocModalOpen] = useState(false)
-
-  const { title, editor, authors } = useTextEditorContext()
-  const { isPreviewMode, isLiveMode, isEditorPreview, isErrorPage, isMobile } = useGlobalContext()
+  const { editor, isSaving } = useTextEditorContext()
+  const { isPreviewMode, isLiveMode, isErrorPage, isMobile } = useGlobalContext()
+  const { publicationId } = usePublicationContext()
+  const { user } = useAuthContext()
 
   const { push } = useRouter()
-
-  const canBePreview = useMemo(() => {
-    return title && !editor?.isEmpty && authors.length
-  }, [title, editor?.isEmpty, authors.length])
 
   if (!editor && !isErrorPage) {
     return <></>
   }
 
-  const downloadDocument = async () => {
-    await HTMLtoDOCX(JSON.stringify(editor?.getHTML()), title).then((data: any) => {
-      const a = document.createElement('a')
-      const url = window.URL.createObjectURL(data)
-
-      a.style.display = 'none'
-      a.href = url
-      a.download = title ? `${title}.docx` : 'scientifichub-publication.docx'
-      a.click()
-      window.URL.revokeObjectURL(url)
-    })
-  }
-
   return (
     <StyledHeader direction="row" justify="between" position="relative">
-      <UploadFileModal
-        isModalOpen={isFileUploadModalOpen}
-        closeModal={() => setIsFileUploadModalOpen(false)}
-      />
-      <PublishPublicationModal
-        isModalOpen={isPublishingModalOpen}
-        closeModal={() => setIsPublishingModalOpen(false)}
-      />
-      <NewDocumentModal
-        isModalOpen={isNewDocModalOpen}
-        closeModal={() => setIsNewDocModalOpen(false)}
-      />
       <Link href="/">
         <StyledLogo href="/">
           <LogoBetaIcon />
         </StyledLogo>
       </Link>
-      <ReactTooltip place="bottom" className="tooltip" id="header" />
 
       <Flex direction="row" align={isLiveMode ? 'center' : 'default'}>
-        {isEditorPreview && (
+        {isPreviewMode && (
           <StyledActionsContainer align="center">
-            <Link href="/publication/new">
-              <StyledNavigationItem
-                data-tip="Back to editor"
-                data-for="header"
-                justify="center"
-                align="center"
-              >
+            <Link href={`/publication/${publicationId}/edit`}>
+              <StyledNavigationItem justify="center" align="center">
                 <Span size="small">Back to editor</Span>
               </StyledNavigationItem>
             </Link>
           </StyledActionsContainer>
         )}
-        {isLiveMode && (
-          <StyledNewDocumentBtn onClick={() => push('/publication/new')}>
+        {isLiveMode && !user && (
+          <StyledNewDocumentBtn onClick={() => push(`/`)}>
             Write a publication <span>- It’s Free</span>
           </StyledNewDocumentBtn>
         )}
-        {!isPreviewMode && !isErrorPage && !isMobile && (
+        {!isPreviewMode && !isErrorPage && !isMobile && !isLiveMode && (
+          <StyledSaving align="center">
+            {!isSaving && <CheckIcon />}
+            <Paragraph size="xsmall" color="text-light">
+              {isSaving ? 'Saving...' : 'Saved !'}
+            </Paragraph>
+          </StyledSaving>
+        )}
+        {!isPreviewMode && !isErrorPage && !isMobile && !isLiveMode && (
           <StyledActionsContainer align="center">
-            <StyledNavigationItem
-              justify="center"
-              align="center"
-              onClick={() => setIsNewDocModalOpen(true)}
-            >
-              <Span size="small">New</Span>
-            </StyledNavigationItem>
-            <StyledNavigationItem
-              justify="center"
-              align="center"
-              onClick={() => setIsFileUploadModalOpen(true)}
-            >
-              <Span size="small">Import</Span>
-            </StyledNavigationItem>
-
-            <StyledNavigationItem justify="center" align="center" onClick={downloadDocument}>
-              <Span size="small">Export</Span>
-            </StyledNavigationItem>
-            <StyledNavigationItem
-              data-tip={
-                canBePreview
-                  ? 'Preview'
-                  : 'Need title, content, and at least one author to be previewed'
-              }
-              justify="center"
-              align="center"
-              inactive={!canBePreview}
-              onClick={() => canBePreview && push('/publication/preview')}
-            >
-              <Span size="small">Preview</Span>
-            </StyledNavigationItem>
-            <StyledNavigationItem
-              data-tip={
-                canBePreview
-                  ? 'Publish'
-                  : 'Need title, content, and at least one author to be published'
-              }
-              data-for="header"
-              justify="center"
-              align="center"
-              inactive={!canBePreview}
-              onClick={() => canBePreview && setIsPublishingModalOpen(true)}
-            >
-              <Span size="small">Publish</Span>
-            </StyledNavigationItem>
+            <NewAction />
+            <ImportAction />
+            <ExportAction />
+            <PreviewAction />
+            <PublishAction />
           </StyledActionsContainer>
         )}
       </Flex>
