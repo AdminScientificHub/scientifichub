@@ -47,8 +47,9 @@ export const StyledFloatingMenuItem = styled(Flex)<{ active?: boolean; isMain?: 
   },
 )
 
-export const StyledFloatingMenu = styled(Flex)(() => {
+export const StyledFloatingMenu = styled(Flex)<{ shouldBeHide: boolean }>(({ shouldBeHide }) => {
   return {
+    ...(shouldBeHide && { display: 'none' }),
     '& > *': {
       '&:not(:last-child)': {
         marginRight: '.8rem',

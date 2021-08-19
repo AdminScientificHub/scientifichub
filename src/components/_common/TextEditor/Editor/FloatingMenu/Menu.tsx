@@ -49,18 +49,12 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
 
   return (
     <FloatingMenu
+      pluginKey=""
       tippyOptions={{
         offset: [0, -50],
         maxWidth: 'initial',
-        zIndex: 10,
-
         onBeforeUpdate: props => {
           const { from, to } = editor.state.selection
-
-          if (isPreviewMode || isLiveMode) {
-            props.disable()
-            return
-          }
 
           editor.state.doc.nodesBetween(from, to, node => {
             if (node.type.name === 'mathBlock') {
@@ -71,6 +65,7 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
           })
         },
       }}
+      shouldShow={() => true}
       editor={editor}
     >
       <UploadImageModal
@@ -78,7 +73,7 @@ export const EditorFloatingMenu: FunctionComponent<TProps> = () => {
         isModalOpen={isImageModalOpen}
       />
       {!isImageModalOpen && (
-        <StyledFloatingMenu direction="row">
+        <StyledFloatingMenu direction="row" shouldBeHide={isPreviewMode || isLiveMode}>
           <StyledFloatingMenuItem
             align="center"
             isMain

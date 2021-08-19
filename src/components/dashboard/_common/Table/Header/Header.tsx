@@ -30,7 +30,6 @@ export const DashboardTableHeader: FunctionComponent<TProps> = ({
   orderSelected,
   hasRows,
 }) => {
-  console.log('hasRows', hasRows)
   return (
     <StyledContainer>
       {columns.map((column, index) => (

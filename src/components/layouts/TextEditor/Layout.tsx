@@ -35,8 +35,10 @@ const TextEditorLayoutComponent: FunctionComponent<TProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    if (editor) {
-      editor?.setEditable(!isPreviewMode && !isLiveMode)
+    if (editor?.isEditable && (isPreviewMode || isLiveMode)) {
+      editor?.setEditable(false)
+    } else {
+      editor?.setEditable(true)
     }
   }, [editor, isPreviewMode, isLiveMode])
 
