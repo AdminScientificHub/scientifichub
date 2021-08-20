@@ -45,7 +45,7 @@ export const AuthLayout: FunctionComponent<TProps> = ({ children }) => {
     <StyledContainer>
       {children}
       <StyledBackgroundContainer align="center" justify="center">
-        <StyledImage src="https://firebasestorage.googleapis.com/v0/b/scientifichub-a905b.appspot.com/o/Group%20119.png?alt=media&token=d7e97492-d77d-41d0-b098-7e5226435255" />
+        <StyledImage src="https://firebasestorage.googleapis.com/v0/b/scientifichub-a905b.appspot.com/o/Group%20119.png?alt=media&token=b2b2b726-e372-4db6-9266-386547f9a4f3" />
       </StyledBackgroundContainer>
     </StyledContainer>
   )
